@@ -16,7 +16,6 @@ const AppNavigator = () => {
         <Stack.Navigator initialRouteName="Onboarding">
             <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false }} />
             <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-            {/* Add other screens as necessary */}
         </Stack.Navigator>
     );
 };
