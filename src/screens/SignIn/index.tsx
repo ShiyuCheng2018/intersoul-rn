@@ -4,9 +4,19 @@ import SigninBg from "../../assets/bg/signinBg.svg";
 import { Dimensions } from 'react-native';
 import Phone from "../../assets/icons/phone.svg";
 import Send from "../../assets/icons/send.svg";
+import {useNavigation} from "@react-navigation/native";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParamList} from "../../AppNavigator";
 
 const { width } = Dimensions.get('window');
+type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
+
 const SignInScreen = () => {
+    const navigation = useNavigation<SignInNavigationProp>();
+    const handleEmailSignIn = () => {
+        navigation.navigate('EmailSignIn');
+    };
+
     return (
         <View className="flex-1 bg-white relative justify-center items-center">
             <View className={"absolute bottom-0 w-full"}>
@@ -30,7 +40,7 @@ const SignInScreen = () => {
                     </View>
 
                     <View>
-                        <TouchableOpacity
+                        <TouchableOpacity onPress={handleEmailSignIn}
                             className={"w-80 h-12 rounded-[36px] bg-gray-50 flex justify-center items-center"}
                             style={{ flexDirection: 'row' }}
                         >
