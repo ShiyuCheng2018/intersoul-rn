@@ -9,7 +9,7 @@ import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../AppNavigator";
 
 const { width } = Dimensions.get('window');
-type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
+export type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;
 
 const SignInScreen = () => {
     const navigation = useNavigation<SignInNavigationProp>();

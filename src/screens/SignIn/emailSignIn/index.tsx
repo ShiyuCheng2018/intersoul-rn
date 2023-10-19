@@ -6,6 +6,12 @@ import {RootStackParamList} from "../../../AppNavigator";
 type EmailSignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'EmailSignIn'>;
 
 const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp }) =>{
+
+    const handleEmailSignIn = () => {
+        navigation.navigate('ProfileCreation');
+    };
+
+
     return(
         <View className={"flex flex-col justify-between items-center"}>
             <View className={"p-10 flex gap-10"}>
@@ -31,7 +37,7 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
             </View>
 
             <View>
-                <TouchableOpacity className={"w-80 h-12 rounded-[36px] bg-primary flex justify-center items-center"}>
+                <TouchableOpacity className={"w-80 h-12 rounded-[36px] bg-primary flex justify-center items-center"} onPress={handleEmailSignIn}>
                     <Text className={"text-sm text-gray-50 font-medium text-center"}>Sign in</Text>
                 </TouchableOpacity>
             </View>
