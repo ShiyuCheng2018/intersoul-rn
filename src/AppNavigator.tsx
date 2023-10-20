@@ -6,6 +6,7 @@ import EmailSignIn from "./screens/SignIn/emailSignIn";
 import ProfileCreation from "./screens/ProfileCreation";
 import {useNavigation} from "@react-navigation/native";
 import {HeaderBackButton} from "@react-navigation/elements";
+import ProfileMediaUpload from "./screens/ProfileMediaUpload";
 
 
 export type RootStackParamList = {
@@ -13,7 +14,7 @@ export type RootStackParamList = {
     SignIn: undefined;
     EmailSignIn: undefined;
     ProfileCreation: undefined;
-    // ... other routes
+    ProfileMediaUpload: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -49,6 +50,14 @@ const AppNavigator = () => {
                                   />),
                               headerTintColor: '#616161',
                               gestureEnabled: false }} />
+
+            <Stack.Screen name={"ProfileMediaUpload"} component={ProfileMediaUpload}
+                          options={{ headerShown: true, headerTitle: 'Add profile medias',
+                              headerBackTitleVisible: false,
+                              headerTintColor: '#616161',
+                              gestureEnabled: false }} />
+
+
         </Stack.Navigator>
     );
 };
