@@ -1,44 +1,60 @@
 import React, {ForwardRefRenderFunction, useCallback, useRef, useState} from "react";
 import {View, StyleSheet, Image, Text, TouchableOpacity, NativeTouchEvent} from "react-native";
 import Swiper from "react-native-deck-swiper";
-import ElonMusk from "../../assets/profile/Elon_Musk.jpeg";
-import Rachel_McAdams from "../../assets/profile/rachel_mcadams.jpeg";
-import Emma_Watson from "../../assets/profile/Emma_Watson.png";
-import Emma_Stone from "../../assets/profile/Emma_Stone.jpeg";
-import Jennifer_Lawrence from "../../assets/profile/Jennifer_Lawrence.jpeg";
-import Anne_Hathaway from "../../assets/profile/Anne_Hathaway.jpg";
-import Natalie_Portman from "../../assets/profile/natalie_portman.jpg";
-import Mila_Kunis from "../../assets/profile/Mila_Kunis.jpg";
-import Shiyu from "../../assets/profile/shiyu.jpg";
-import Tom from "../../assets/profile/tom.jpeg";
+import ElonMusk from "../../assets/profile/elonMusk/Elon_Musk.jpeg";
+import ElonMusk_1 from "../../assets/profile/elonMusk/ElonMusk_1.jpg";
+import ElonMusk_2 from "../../assets/profile/elonMusk/ElonMusk_2.jpeg";
+import ElonMusk_3 from "../../assets/profile/elonMusk/ElonMusk_3.jpg";
+import Rachel_McAdams from "../../assets/profile/Rachel_McAdams/rachel_mcadams.jpeg";
+import Rachel_McAdams_1 from "../../assets/profile/Rachel_McAdams/Rachel_McAdams_1.jpg";
+import Rachel_McAdams_2 from "../../assets/profile/Rachel_McAdams/Rachel_McAdams_2.jpeg";
+import Rachel_McAdams_3 from "../../assets/profile/Rachel_McAdams/Rachel_McAdams_3.jpeg";
+import Rachel_McAdams_5 from "../../assets/profile/Rachel_McAdams/Rachel_McAdams_5.jpeg";
+import Rachel_McAdams_6 from "../../assets/profile/Rachel_McAdams/Rachel_McAdams_6.jpeg";
+import Emma_Watson from "../../assets/profile/Emma_Watson/Emma_Watson.png";
+import Emma_Watson_1 from "../../assets/profile/Emma_Watson/emma_watson_1.jpg";
+import Emma_Watson_2 from "../../assets/profile/Emma_Watson/Emma_Watson_2.jpeg";
+import Emma_Watson_3 from "../../assets/profile/Emma_Watson/Emma_Watson_3.jpg";
+import Emma_Watson_4 from "../../assets/profile/Emma_Watson/Emma_Watson_4.jpeg";
+import Emma_Stone from "../../assets/profile/Emma_Stone/Emma_Stone.jpeg";
+import Jennifer_Lawrence from "../../assets/profile/Jennifer_Lawrence/Jennifer_Lawrence.jpeg";
+import Anne_Hathaway from "../../assets/profile/Anne_Hathaway/Anne_Hathaway.jpg";
+import Natalie_Portman from "../../assets/profile/Natalie_Portman/natalie_portman.jpg";
+import Mila_Kunis from "../../assets/profile/Mila_Kunis/Mila_Kunis.jpg";
+import Shiyu from "../../assets/profile/shiyu/shiyu.jpg";
+import Tom from "../../assets/profile/Tom/tom.jpeg";
+import Tom_1 from "../../assets/profile/Tom/Tom_Holland_1.jpg";
+import Tom_2 from "../../assets/profile/Tom/Tom_Holland_3.jpeg";
+import Tom_3 from "../../assets/profile/Tom/Tom_Holland_2.jpg";
 import VerifiedIcon from "../VerifiedIcon";
 import DownIcon from "../DownIcon";
 import {Direction} from "../../screens/Discover";
+import * as Haptics from 'expo-haptics';
 
 const data = [
     {
       name: "Shiyu",
-      url: [Shiyu, Tom, Rachel_McAdams],
+      url: [Shiyu],
       age: 26,
     },
     {
         name: "Elon Musk",
-        url: [ElonMusk, Emma_Watson, Tom, Rachel_McAdams],
+        url: [ElonMusk, ElonMusk_1, ElonMusk_2, ElonMusk_3],
         age: 26,
     },
     {
         name: "Rachel McAdams",
-        url: [Rachel_McAdams],
+        url: [Rachel_McAdams, Rachel_McAdams_1, Rachel_McAdams_2, Rachel_McAdams_3, Rachel_McAdams_5, Rachel_McAdams_6],
         age: 26,
     },
     {
       name: "Tom Holland"  ,
-      url: [Tom],
+      url: [Tom, Tom_1, Tom_2, Tom_3],
         age: 26,
     },
     {
         name: "Emma Watson",
-        url:  [Emma_Watson],
+        url:  [Emma_Watson, Emma_Watson_1, Emma_Watson_2, Emma_Watson_3, Emma_Watson_4],
         age: 26,
     },
     {
@@ -85,6 +101,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
     const [imageIndices, setImageIndices] = useState(initializeImageIndices(profiles));
 
     const handleLeftTap = useCallback((cardIndex:number) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
         const updatedIndices = [...imageIndices];
 
         if (cardIndex < profiles.length && cardIndex >= 0) {
@@ -100,6 +117,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
     }, [imageIndices, profiles]);
 
     const handleRightTap = useCallback((cardIndex:number) => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
         const updatedIndices = [...imageIndices];
 
         if (cardIndex < profiles.length && cardIndex >= 0) {
