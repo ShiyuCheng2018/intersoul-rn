@@ -30,6 +30,7 @@ import VerifiedIcon from "../VerifiedIcon";
 import DownIcon from "../DownIcon";
 import {Direction} from "../../screens/Discover";
 import * as Haptics from 'expo-haptics';
+import {LinearGradient} from "expo-linear-gradient";
 
 const data = [
     {
@@ -100,6 +101,30 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
     const [profiles, setProfiles] = useState(data); // replace YOUR_REQUEST_DATA with the response from your request
     const [imageIndices, setImageIndices] = useState(initializeImageIndices(profiles));
 
+
+    const renderImageIndicator = (currentIndex: number, totalImages: number) => {
+        return (
+            <View style={{    position: 'absolute', zIndex: 1,
+                top: 10,
+                margin: "auto", justifyContent: "center", alignItems: "center",
+                flexDirection: 'row',
+            }}>
+                {Array.from({ length: totalImages }).map((_, index) => (
+                    <View key={index} style={[
+                        {width: 10,
+                            height: 10,
+                            borderRadius: 36,
+                            marginHorizontal: 4,
+                            backgroundColor: 'white',
+                            opacity: 0.5},
+                        currentIndex === index && {opacity: 1}
+                    ]} />
+                ))}
+            </View>
+        );
+    };
+
+
     const handleLeftTap = useCallback((cardIndex:number) => {
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
         const updatedIndices = [...imageIndices];
@@ -152,7 +177,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
                 cards={data}
                 renderCard={(card, index) => {
                     return (
-                        <View style={{height: 635, width: 356, borderRadius: 16}}>
+                        <View style={{height: 635, width: 356, borderRadius: 16, alignItems: "center",display: "flex", justifyContent:"center", position: "relative"}}>
 
                             <TouchableOpacity
                                 style={{position: 'absolute', top: 0, left: 0, width: 356/2, height: 635, zIndex: 1 }}
@@ -165,11 +190,12 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
                                 onPress={()=>handleRightTap(index)}
                             ></TouchableOpacity>
 
+                            {renderImageIndicator(imageIndices[index], card.url.length)}
                             <Image style={{height: "100%", width: "100%", borderRadius: 16,  position:"relative", top: 0,}} source={card.url[imageIndices[index]]}
-                                   alt={"pic"}/>
+                                           alt={"pic"}/>
 
 
-                            <TouchableOpacity style={{position: "absolute", bottom: 0, borderRadius: 16, width: "100%", paddingLeft: 8, paddingBottom: 8}}>
+                            <TouchableOpacity style={{position: "absolute",zIndex: 1, bottom: 0, borderRadius: 16, width: "100%", paddingLeft: 8, paddingBottom: 8}}>
                                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6, justifyContent: "space-between"}}>
 
                                     <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6}}>
@@ -181,6 +207,10 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
                                     <DownIcon/>
                                 </View>
                             </TouchableOpacity>
+                                <LinearGradient
+                                    colors={['transparent', '#282726']}
+                                    style={{height: "20%", width: "100%",bottom: 0,position: "absolute",borderRadius: 16}}  // Here we apply NativeWind styles
+                                ></LinearGradient>
                         </View>
                     )
                 }}
