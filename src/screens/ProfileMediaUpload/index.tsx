@@ -1,10 +1,17 @@
 import React from "react";
 import {Dimensions, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
+import {StackNavigationProp} from "@react-navigation/stack";
+import {RootStackParamList} from "../../AppNavigator";
 
+type ProfileMediaUploadScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileMediaUpload'>;
 
 const { width, height } = Dimensions.get('window');
-const ProfileMediaUpload = () =>{
+const ProfileMediaUpload = ({ navigation}:{ navigation: ProfileMediaUploadScreenNavigationProp }) =>{
+
+    const handleDone = () => {
+        navigation.navigate('Discover');
+    }
 
     return(
             <View className={"h-full flex justify-between items-center"}>
@@ -73,7 +80,7 @@ const ProfileMediaUpload = () =>{
                 </View>
 
                 <View className={"bottom-10"}>
-                    <TouchableOpacity className={"w-80 h-12 rounded-[36px] bg-primary flex justify-center items-center"}>
+                    <TouchableOpacity className={"w-80 h-12 rounded-[36px] bg-primary flex justify-center items-center"} onPress={handleDone}>
                         <Text className={"text-sm text-gray-50 font-bold text-center"}>Done</Text>
                     </TouchableOpacity>
                 </View>
