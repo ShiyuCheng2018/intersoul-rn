@@ -18,7 +18,7 @@ const SignInScreen = () => {
     };
 
     return (
-        <View className="flex-1 bg-white relative justify-center items-center">
+        <View className="flex-1 bg-black relative justify-center items-center">
             <View className={"absolute bottom-0 w-full"}>
                 <SigninBg width={width} height={(width * 584) / 375} preserveAspectRatio="xMidYMid meet"/>
             </View>

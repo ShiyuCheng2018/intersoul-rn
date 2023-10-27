@@ -21,12 +21,13 @@ const ProfileCreation = () =>{
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1}}
         >
-            <ScrollView className={"h-auto"} ref={scrollViewRef} >
-                <View className={"flex flex-col justify-between items-center bg-white h-auto pb-10"}>
+            <ScrollView className={"h-auto"} ref={scrollViewRef} style={{ flex: 1, backgroundColor: 'black' }}
+                        contentContainerStyle={{ backgroundColor: 'black' }}>
+                <View className={"flex flex-col justify-between items-center bg-black h-auto pb-10"}>
                     <View className={"p-5 flex gap-10"}>
                         <View className={"pt-10"}>
                             <View className={"bottom-2"}>
-                                <Text className={"text-sm text-gray-700 font-medium"}>Username</Text>
+                                <Text className={"text-sm text-white font-medium"}>Username</Text>
                             </View>
                             <TextInput textContentType={"emailAddress"}
                                        placeholder="Enter username"
@@ -36,7 +37,7 @@ const ProfileCreation = () =>{
 
                         <View>
                             <View className={"bottom-2"}>
-                                <Text className={"text-sm text-gray-700 font-medium"}>Birthday</Text>
+                                <Text className={"text-sm text-white font-medium"}>Birthday</Text>
                             </View>
                             <TextInput
                                 placeholder="Enter birthday"
@@ -46,7 +47,7 @@ const ProfileCreation = () =>{
 
                         <View>
                             <View className={"bottom-2"}>
-                                <Text className={"text-sm text-gray-700  font-medium"}>Gernder</Text>
+                                <Text className={"text-sm text-white  font-medium"}>Gender</Text>
                             </View>
                             <View className={"flex flex-row justify-around items-center"}>
                                 <TouchableOpacity style={{height: 60, width: 60}} className={"bg-gray-100 justify-around items-center rounded-[36px]"}>
@@ -62,7 +63,7 @@ const ProfileCreation = () =>{
 
                         <View>
                             <View className={"bottom-2"}>
-                                <Text className={"text-sm text-gray-700 font-medium"}>Would like to match with</Text>
+                                <Text className={"text-sm text-white font-medium"}>Would like to match with</Text>
                             </View>
                             <View className={"flex flex-row justify-around items-center"}>
                                 <TouchableOpacity style={{height: 60, width: 60}} className={"bg-gray-100 justify-around items-center rounded-[36px]"}>
@@ -78,7 +79,7 @@ const ProfileCreation = () =>{
 
                         <View>
                             <View className={"bottom-2"}>
-                                <Text className={"text-sm text-gray-700 font-medium"}>About me</Text>
+                                <Text className={"text-sm text-black font-medium"}>About me</Text>
                             </View>
                             <TextInput style={{height: 5 * 16 + 80}} onFocus={() => {
                                 setTimeout(() => {

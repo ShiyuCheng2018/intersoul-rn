@@ -8,9 +8,11 @@ import {useNavigation} from "@react-navigation/native";
 import {HeaderBackButton} from "@react-navigation/elements";
 import ProfileMediaUpload from "./screens/ProfileMediaUpload";
 import Discover from "./screens/Discover";
-import User from "./assets/icons/user.svg";
+import Filter from "./assets/icons/filter.svg";
 import Like from "./assets/icons/like.svg"
 import {View} from "react-native";
+import ProfileDetailScreen, { ProfileDetailRouteParams} from "./screens/ProfileDetail";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export type RootStackParamList = {
     Onboarding: undefined;
@@ -19,6 +21,7 @@ export type RootStackParamList = {
     ProfileCreation: undefined;
     ProfileMediaUpload: undefined;
     Discover: undefined;
+    ProfileDetail: ProfileDetailRouteParams;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -27,7 +30,7 @@ const AppNavigator = () => {
     const navigation = useNavigation<SignInNavigationProp>();
 
     return (
-        <Stack.Navigator initialRouteName="Discover">
+        <Stack.Navigator initialRouteName="Discover" screenOptions={{headerStyle: {backgroundColor: "black", borderBottomWidth: 0, elevation:0, shadowColor: 'transparent'}}}>
             <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false, gestureEnabled: false }} />
             <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false, gestureEnabled: false }} />
             <Stack.Screen
@@ -38,7 +41,7 @@ const AppNavigator = () => {
                     headerShown: true,
                     headerTitle: 'Email',
                     headerBackTitleVisible: false,
-                    headerTintColor: '#616161',
+                    headerTintColor: 'white',
                 }}
             />
             <Stack.Screen name={"ProfileCreation"} component={ProfileCreation}
@@ -52,7 +55,7 @@ const AppNavigator = () => {
                                           navigation.navigate('SignIn')
                                       }}
                                   />),
-                              headerTintColor: '#616161',
+                              headerTintColor: 'white',
                               gestureEnabled: false }} />
 
             <Stack.Screen name={"ProfileMediaUpload"} component={ProfileMediaUpload}
@@ -61,20 +64,24 @@ const AppNavigator = () => {
                               headerTintColor: '#616161',
                               gestureEnabled: false }} />
             <Stack.Screen name={"Discover"} component={Discover}
-                          options={{ headerShown: true, headerTitle: 'Discover',
+                          options={{ headerShown: true, headerTitle: 'InterSoul',
                               headerBackTitleVisible: false,
-                              headerTintColor: '#616161',
+                              headerTintColor: '#ffffff',
                               headerLeft: () => (
                                   <View style={{ marginLeft: 20 }}>
-                                      <Like/>
+                                      <Icon name={"notifications-outline"} size={28} color={"white"}/>
                                   </View>
                               ),
                               headerRight: () => (
                                   <View style={{ marginRight: 20 }}>
-                                      <User/>
+                                      <Filter/>
                                   </View>
                               ),
                               gestureEnabled: false }} />
+            <Stack.Screen name={"ProfileDetail"} component={ProfileDetailScreen} options={{
+                headerShown: false,
+                headerBackTitleVisible: false,
+            }}/>
 
 
         </Stack.Navigator>

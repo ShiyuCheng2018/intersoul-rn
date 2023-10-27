@@ -1,5 +1,5 @@
 import React, {ForwardRefRenderFunction, useCallback, useRef, useState} from "react";
-import {View, StyleSheet, Image, Text, TouchableOpacity, NativeTouchEvent} from "react-native";
+import {View, StyleSheet, Image, Text, TouchableOpacity, NativeTouchEvent, Dimensions} from "react-native";
 import Swiper from "react-native-deck-swiper";
 import ElonMusk from "../../assets/profile/elonMusk/Elon_Musk.jpeg";
 import ElonMusk_1 from "../../assets/profile/elonMusk/ElonMusk_1.jpg";
@@ -31,62 +31,76 @@ import DownIcon from "../DownIcon";
 import {Direction} from "../../screens/Discover";
 import * as Haptics from 'expo-haptics';
 import {LinearGradient} from "expo-linear-gradient";
+const screenHeight = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
+
 
 const data = [
     {
       name: "Shiyu",
       url: [Shiyu],
       age: 26,
+      profession: "Software Engineer at HyperOracle"
     },
     {
         name: "Elon Musk",
         url: [ElonMusk, ElonMusk_1, ElonMusk_2, ElonMusk_3],
         age: 26,
+        profession: "CEO of Tesla"
     },
     {
         name: "Rachel McAdams",
         url: [Rachel_McAdams, Rachel_McAdams_1, Rachel_McAdams_2, Rachel_McAdams_3, Rachel_McAdams_5, Rachel_McAdams_6],
         age: 26,
+        profession: "UI/UX Designer"
     },
     {
       name: "Tom Holland"  ,
       url: [Tom, Tom_1, Tom_2, Tom_3],
         age: 26,
+        profession: "Actor / film director"
     },
     {
         name: "Emma Watson",
         url:  [Emma_Watson, Emma_Watson_1, Emma_Watson_2, Emma_Watson_3, Emma_Watson_4],
         age: 26,
+        profession: "Actress / film director / writer"
     },
     {
         name: "Emma Stone",
         url: [Emma_Stone],
         age: 26,
+        profession: "Architect"
     },
     {
         name: "Jennifer Lawrence",
         url: [Jennifer_Lawrence],
         age: 26,
+        profession: "Investor/ film director / writer"
     },
     {
         name: "Anne Hathaway",
         url: [Anne_Hathaway],
         age: 26,
+        profession: "Investor/ film director / writer"
     },
     {
         name: "Natalie Portman",
         url: [Natalie_Portman],
         age: 26,
+        profession: "Investor/ film director / writer"
     },
     {
         name: "Mila Kunis",
         url: [Mila_Kunis],
         age: 26,
+        profession: "Investor/ film director / writer"
     }
 ]
 
 type CardDeckProps = {
     setSwipingDirection: (direction: Direction) => void;
+    viewProfileDetail: (userId: string) => void;
 }
 
 const SWIPE_THRESHOLD = 100;
@@ -96,7 +110,7 @@ const initializeImageIndices = (profiles:any) => {
 };
 
 const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, ref ) =>{
-    const {setSwipingDirection} = props;
+    const {setSwipingDirection, viewProfileDetail} = props;
     const nextCardReset = useRef(false);
     const [profiles, setProfiles] = useState(data); // replace YOUR_REQUEST_DATA with the response from your request
     const [imageIndices, setImageIndices] = useState(initializeImageIndices(profiles));
@@ -126,7 +140,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
 
 
     const handleLeftTap = useCallback((cardIndex:number) => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         const updatedIndices = [...imageIndices];
 
         if (cardIndex < profiles.length && cardIndex >= 0) {
@@ -142,7 +156,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
     }, [imageIndices, profiles]);
 
     const handleRightTap = useCallback((cardIndex:number) => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
         const updatedIndices = [...imageIndices];
 
         if (cardIndex < profiles.length && cardIndex >= 0) {
@@ -173,20 +187,20 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
         <View style={styles.container}>
 
             <Swiper ref={ref}
-                containerStyle={{backgroundColor: "transparent"}}
+                containerStyle={{backgroundColor: "tansparent"}}
                 cards={data}
                 renderCard={(card, index) => {
                     return (
-                        <View style={{height: 635, width: 356, borderRadius: 16, alignItems: "center",display: "flex", justifyContent:"center", position: "relative"}}>
+                        <View style={{height: screenHeight * 0.76, width: screenWidth * 0.90, borderRadius: 16, alignItems: "center",display: "flex", justifyContent:"center", position: "relative"}}>
 
                             <TouchableOpacity
-                                style={{position: 'absolute', top: 0, left: 0, width: 356/2, height: 635, zIndex: 1 }}
+                                style={{position: 'absolute', top: 0, left: 0, width: screenWidth * 0.90 / 2, height: screenHeight * 0.76, zIndex: 1}}
                                 onPress={()=>handleLeftTap(index)}
                             ></TouchableOpacity>
 
                             {/* This touchable area is for detecting taps on the right side */}
                             <TouchableOpacity
-                                style={{position: 'absolute', top: 0, right: 0, width: 356/2, height: 635, zIndex: 1 }}
+                                style={{position: 'absolute', top: 0, right: 0, width: screenWidth * 0.90 / 2, height: screenHeight * 0.76, zIndex: 1}}
                                 onPress={()=>handleRightTap(index)}
                             ></TouchableOpacity>
 
@@ -195,21 +209,23 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
                                            alt={"pic"}/>
 
 
-                            <TouchableOpacity style={{position: "absolute",zIndex: 1, bottom: 0, borderRadius: 16, width: "100%", paddingLeft: 8, paddingBottom: 8}}>
+                            <TouchableOpacity onPress={()=>viewProfileDetail(index.toString())} style={{position: "absolute",zIndex: 1, bottom: 0, borderRadius: 16, width: "100%", paddingLeft: 8, paddingBottom: 80}}>
                                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6, justifyContent: "space-between"}}>
 
-                                    <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6}}>
-                                        <Text style={{color: "white", fontSize: 25, fontWeight: "bold"}}>{`${card.name}, ${card.age}`}
-                                        </Text>
-                                        <VerifiedIcon/>
+                                    <View style={{display: "flex", flexDirection: "column", gap: 3}}>
+                                        <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6}}>
+                                            <Text style={{color: "white", fontSize: 25, fontWeight: "bold"}}>{`${card.name}, ${card.age}`}
+                                            </Text>
+                                            <VerifiedIcon/>
+                                        </View>
+                                        <Text style={{color: "white", fontSize: 15}}>{`${card.profession}`}</Text>
+                                        <Text style={{color: "white", fontSize: 15}}>2.5km away</Text>
                                     </View>
-
-                                    <DownIcon/>
                                 </View>
                             </TouchableOpacity>
                                 <LinearGradient
-                                    colors={['transparent', '#282726']}
-                                    style={{height: "20%", width: "100%",bottom: 0,position: "absolute",borderRadius: 16}}  // Here we apply NativeWind styles
+                                    colors={['transparent', '#020202']}
+                                    style={{height: "30%", width: "100%",bottom: 0,position: "absolute",borderRadius: 16}}  // Here we apply NativeWind styles
                                 ></LinearGradient>
                         </View>
                     )
@@ -268,17 +284,12 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, marginTop: -60,
+        flex: 1, marginTop: -(screenHeight * 0.072),
         backgroundColor: "transparent",zIndex: 0,
+        height: screenHeight,
+        width: screenWidth,
     },
-    card: {
-        height: 642,
-        width: 356,top: 0,left:0, position: "relative",
-        borderWidth: 2,
-        borderColor: "transparent",
-        justifyContent: "center",
-        backgroundColor: "white", borderRadius: 16,
-    },
+
     text: {
         textAlign: "center",
         fontSize: 50,position:"absolute",top:0,left:0,

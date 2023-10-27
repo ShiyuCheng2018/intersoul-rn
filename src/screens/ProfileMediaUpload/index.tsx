@@ -14,7 +14,7 @@ const ProfileMediaUpload = ({ navigation}:{ navigation: ProfileMediaUploadScreen
     }
 
     return(
-            <View className={"h-full flex justify-between items-center"}>
+            <View className={"h-full flex justify-between items-center bg-black"}>
                 <View className={"top-10 flex justify-center items-center gap-5"}>
                     <ScrollView horizontal style={{ maxHeight: 130, flexDirection: 'row' }} showsHorizontalScrollIndicator={false}
                                 contentContainerStyle={{display:"flex",flexDirection:"row", justifyContent: 'center', alignItems: 'center', gap:5}}>
