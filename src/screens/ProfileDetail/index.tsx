@@ -17,6 +17,7 @@ import VerifiedIcon from "../../components/VerifiedIcon";
 import Icon from "react-native-vector-icons/Ionicons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import useCardActions from "../../hooks/useCardActions";
 
 export type ProfileDetailRouteParams = {
     userId: string;
@@ -32,6 +33,7 @@ const screenWidth = Dimensions.get('window').width;
 const pictures = [Rachel_McAdams, Rachel_McAdams_1, Rachel_McAdams_2, Rachel_McAdams_3, Rachel_McAdams_5, Rachel_McAdams_6]
 const ProfileDetailScreen: React.FC<ProfileDetailProps> = ({ route }) => {
     const { userId } = route.params;
+    const {swipeDirection, setSwipingDirection, swiperRef} = useCardActions();
 
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }} edges={['top']}>
@@ -160,7 +162,7 @@ const ProfileDetailScreen: React.FC<ProfileDetailProps> = ({ route }) => {
                 </View>
             </ScrollView>
 
-            <CardWithActions page={CardWithActionsPages.profileDetail} setSwipingDirection={(direction: Direction) => null} zIndex={1} swipingDirection={null} swiperRef={useRef<Swiper<any>>(null)} />
+            <CardWithActions page={CardWithActionsPages.profileDetail} setSwipingDirection={(direction: Direction) => setSwipingDirection(direction)} zIndex={1} swipingDirection={swipeDirection} swiperRef={swiperRef as  React.RefObject<Swiper<any>>} />
 
             <LinearGradient
                 colors={['transparent', '#020202']}

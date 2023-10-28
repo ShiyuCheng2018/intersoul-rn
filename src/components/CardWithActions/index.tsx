@@ -7,6 +7,8 @@ import Boost from "../../assets/icons/boost.svg";
 import React from "react";
 import {Direction} from "../../screens/Discover";
 import Swiper from "react-native-deck-swiper";
+import {DIRECTIONS} from "../../contexts/CardActionsContext";
+import {useNavigation} from "@react-navigation/native";
 
 
 const screenHeight = Dimensions.get('window').height;
@@ -31,6 +33,8 @@ export const CardWithActionsPages:CardWithActionsPages = {
 }
 
 const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwipingDirection, swipingDirection, swiperRef}) => {
+    const navigation = useNavigation();
+
     return (
         <View
               style={{bottom: page === CardWithActionsPages.profileDetail? screenHeight * 0.01 : screenHeight * 0.14, width: page === CardWithActionsPages.profileDetail? "100%" : "88%", height: screenHeight*0.07,borderRadius: 16,
@@ -47,7 +51,7 @@ const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwi
                 <Retry style={{height: 23, width: 23}}/>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{setSwipingDirection("LEFT"); swiperRef.current?.swipeLeft()}}
+            <TouchableOpacity onPress={()=>{setSwipingDirection(DIRECTIONS.left); (page === CardWithActionsPages.profileDetail) && navigation.goBack(); swiperRef.current?.swipeLeft()}}
               style={{height: 50, width: 50,
                   shadowColor: "rgb(204, 219, 232)",
                   shadowOffset: { width: 3, height: 3 }, display: "flex",
@@ -55,7 +59,7 @@ const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwi
                   shadowRadius: 6, borderRadius: 36,
                   elevation: 4, backgroundColor: swipingDirection === "LEFT"? '#ffffff' : "transparent"
               }}>
-                {swipingDirection === "LEFT" ?
+                {swipingDirection === DIRECTIONS.left ?
                     <LinearGradient
                         start={{x: 0, y: 0}} style={{display: "flex",flex: 1, width: "100%",justifyContent: "space-around", alignItems: "center",borderRadius: 36 }}
                         end={{x: 1, y: 1}}
@@ -65,16 +69,16 @@ const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwi
                     </LinearGradient>:  <Dislike fill={"#FF7074"}/>}
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{setSwipingDirection("RIGHT"); swiperRef.current?.swipeRight()}}
+            <TouchableOpacity onPress={()=>{setSwipingDirection(DIRECTIONS.right); (page === CardWithActionsPages.profileDetail)  && navigation.goBack(); swiperRef.current?.swipeRight()}}
                               style={{height: 50, width: 50,
                                   shadowColor: "rgb(204, 219, 232)",
                                   shadowOffset: { width: 3, height: 3 }, display: "flex",
                                   shadowOpacity: 0.5,justifyContent: "space-around", alignItems: "center",
                                   shadowRadius: 6, borderRadius: 36,
-                                  elevation: 4, backgroundColor: swipingDirection === "RIGHT"? '#ffffff' : "transparent"
+                                  elevation: 4, backgroundColor: swipingDirection === DIRECTIONS.right? '#ffffff' : "transparent"
                               }}>
                 {
-                    swipingDirection === "RIGHT" ?
+                    swipingDirection === DIRECTIONS.right ?
                         <LinearGradient
                             start={{x: 0, y: 0}}
                             end={{x: 1, y: 1}}
