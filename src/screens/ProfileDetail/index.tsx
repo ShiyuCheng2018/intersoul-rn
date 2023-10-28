@@ -120,18 +120,30 @@ const ProfileDetailScreen: React.FC<ProfileDetailProps> = ({ route }) => {
                     <View className={"flex flex-col gap-2"}>
                         <Text style={{ color: "white", fontSize: 24, fontWeight: "bold"}}>Looking for</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6,}}>
-                            <Text style={{ color: "#FF7074", fontSize: 16, backgroundColor: "rgba(91,91,91,0.2)", padding: 8, borderRadius: 16, }}>Relationship</Text>
-                            <Text style={{ color: "#FF7074", fontSize: 16, backgroundColor: "rgba(91,91,91,0.2)", padding: 8, borderRadius: 16}}>Chat</Text>
-                            <Text style={{ color: "#FF7074", fontSize: 16, backgroundColor: "rgba(91,91,91,0.2)", padding: 8, borderRadius: 16}}>Friendship</Text>
-                            <Text style={{ color: "#FF7074", fontSize: 16, backgroundColor: "rgba(91,91,91,0.2)", padding: 8, borderRadius: 16}}>Killing time</Text>
+                            <View style={{backgroundColor: "rgba(255,112,116,0.2)", padding: 8, borderRadius: 16 }}>
+                                <Text style={{ color: "#FF7074", fontSize: 16, }}>Relationship</Text>
+                            </View>
+                            <View style={{backgroundColor: "rgba(199,178,255,0.2)", padding: 8, borderRadius: 16 }}>
+                                <Text style={{ color: "#c7b2ff", fontSize: 16, }}>Chat</Text>
+                            </View>
+                            <View style={{backgroundColor: "rgba(30,196,220,0.2)", padding: 8, borderRadius: 16 }}>
+                                <Text style={{ color: "#1ec4dc", fontSize: 16}}>Friendship</Text>
+                            </View>
+                            <View style={{backgroundColor: "rgba(255,194,215,0.2)", padding: 8, borderRadius: 16 }}>
+                                <Text style={{ color: "#ffc2d7", fontSize: 16}}>Killing time</Text>
+                            </View>
                         </View>
                     </View>
 
                     <View className={"flex flex-col gap-2"}>
                         <Text style={{ color: "white", fontSize: 24, fontWeight: "bold"}}>Languages</Text>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6,}}>
-                            <Text style={{ color: "#FF7074", fontSize: 16, backgroundColor: "rgba(91,91,91,0.2)", padding: 8, borderRadius: 16, }}>English</Text>
-                            <Text style={{ color: "#FF7074", fontSize: 16, backgroundColor: "rgba(91,91,91,0.2)", padding: 8, borderRadius: 16}}>Chinese</Text>
+                            <View style={{backgroundColor: "rgba(255,112,116,0.2)", padding: 8, borderRadius: 16 }}>
+                                <Text style={{ color: "#FF7074", fontSize: 16, }}>English</Text>
+                            </View>
+                            <View style={{backgroundColor: "rgba(201,217,255,0.2)", padding: 8, borderRadius: 16 }}>
+                                <Text style={{ color: "#c9d9ff", fontSize: 16, }}>Chinese</Text>
+                            </View>
                         </View>
                     </View>
 
