@@ -1,7 +1,7 @@
 import React from "react";
 import {KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../../AppNavigator";
+import {RootStackParamList} from "../../navigations/AppNavigator";
 import Male from "../../assets/icons/male.svg";
 import Female from "../../assets/icons/female.svg";
 import {useNavigation} from "@react-navigation/native";

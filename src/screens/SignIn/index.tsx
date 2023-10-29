@@ -6,7 +6,7 @@ import Phone from "../../assets/icons/phone.svg";
 import Send from "../../assets/icons/send.svg";
 import {useNavigation} from "@react-navigation/native";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../../AppNavigator";
+import {RootStackParamList} from "../../navigations/AppNavigator";
 
 const { width } = Dimensions.get('window');
 export type SignInNavigationProp = StackNavigationProp<RootStackParamList, 'SignIn'>;

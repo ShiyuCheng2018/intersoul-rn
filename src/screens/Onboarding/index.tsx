@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import {View, Text} from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import {RootStackParamList} from "../../AppNavigator";
+import {RootStackParamList} from "../../navigations/AppNavigator";
 import {LinearGradient} from "expo-linear-gradient";
 import Hearts from "../../assets/icons/hearts.svg";
 

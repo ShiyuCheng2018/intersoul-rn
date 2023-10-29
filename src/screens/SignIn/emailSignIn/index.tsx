@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput, TouchableOpacity} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../../../AppNavigator";
+import {RootStackParamList} from "../../../navigations/AppNavigator";
 
 type EmailSignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'EmailSignIn'>;
 

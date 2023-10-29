@@ -1,5 +1,5 @@
 import registerRootComponent from "expo/build/launch/registerRootComponent";
-import AppNavigator from "./AppNavigator";
+import AppNavigator from "./navigations/AppNavigator";
 import {NavigationContainer} from "@react-navigation/native";
 import {CardActionsProvider} from "./contexts/CardActionsContext";
 

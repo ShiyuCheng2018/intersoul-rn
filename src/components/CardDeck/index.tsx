@@ -187,7 +187,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
         <View style={styles.container}>
 
             <Swiper ref={ref}
-                containerStyle={{backgroundColor: "tansparent"}}
+                containerStyle={{backgroundColor: "transparent"}}
                 cards={data}
                 renderCard={(card, index) => {
                     return (

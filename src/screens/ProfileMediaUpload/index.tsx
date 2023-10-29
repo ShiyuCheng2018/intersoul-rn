@@ -2,7 +2,7 @@ import React from "react";
 import {Dimensions, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {LinearGradient} from "expo-linear-gradient";
 import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "../../AppNavigator";
+import {RootStackParamList} from "../../navigations/AppNavigator";
 
 type ProfileMediaUploadScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileMediaUpload'>;
 
@@ -10,7 +10,7 @@ const { width, height } = Dimensions.get('window');
 const ProfileMediaUpload = ({ navigation}:{ navigation: ProfileMediaUploadScreenNavigationProp }) =>{
 
     const handleDone = () => {
-        navigation.navigate('Discover');
+        navigation.navigate('MainApp', { screen: 'Discover' });
     }
 
     return(
