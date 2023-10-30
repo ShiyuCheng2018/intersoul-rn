@@ -28,8 +28,8 @@ const BottomTabNavigator = () => {
             screenOptions={{
                 tabBarActiveTintColor: '#FF7074',
                 tabBarInactiveTintColor: '#ffffff', tabBarShowLabel: false,
-                tabBarStyle: { backgroundColor: 'transparent',  borderTopWidth: 0,position: 'absolute',
-                    shadowOpacity: 0,elevation: 0, }, headerTintColor: 'white',
+                tabBarStyle: { backgroundColor: 'transparent', position: 'absolute',
+                    shadowOpacity: 0,elevation: 0, borderTopWidth: 0}, headerTintColor: 'white',
                 headerStyle: { backgroundColor: 'black',  borderBottomWidth: 0,
                     shadowOpacity: 0,elevation: 0,
                 },  headerShown: true,
@@ -59,7 +59,7 @@ const BottomTabNavigator = () => {
             <Tab.Screen
                 name="Likes"
                 component={Likes}
-                options={{
+                options={{ tabBarStyle:{backgroundColor: "black", shadowOpacity: 0,elevation: 0, borderTopWidth: 0},
                     tabBarLabel: 'Likes',
                     tabBarIcon: ({ color, size }) => (
                         <LikeTheme height={28} fill={color}/>

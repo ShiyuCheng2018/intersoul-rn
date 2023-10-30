@@ -26,7 +26,7 @@ const Discover = ()=>{
             {/*profile pictures view*/}
             <CardDeck ref={swiperRef} viewProfileDetail={viewProfileDetail} setSwipingDirection={(direction:Direction)=>setSwipingDirection(direction)}/>
             {/*discover options*/}
-            <CardWithActions setSwipingDirection={(direction: Direction)=>setSwipingDirection(direction)} swipingDirection={swipeDirection} swiperRef={swiperRef as React.RefObject<Swiper<any>>}/>
+            {/*<CardWithActions setSwipingDirection={(direction: Direction)=>setSwipingDirection(direction)} swipingDirection={swipeDirection} swiperRef={swiperRef as React.RefObject<Swiper<any>>}/>*/}
         </View>
     )
 }

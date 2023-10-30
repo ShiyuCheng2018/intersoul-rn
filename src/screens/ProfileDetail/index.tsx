@@ -66,7 +66,7 @@ const ProfileDetailScreen: React.FC<ProfileDetailProps> = ({ route }) => {
                     <View className={"flex flex-col gap-2"}>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6,}}>
                             <Text style={{ color: "white", fontSize: 30, fontWeight: "bold"}}>Rachel McAdams, 24</Text>
-                            <VerifiedIcon/>
+                            <VerifiedIcon width={25} height={25}/>
                         </View>
                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6,}}>
                             <MaterialIcons name={"work-outline"} size={16} color={"#FF7074"}/>
@@ -162,7 +162,7 @@ const ProfileDetailScreen: React.FC<ProfileDetailProps> = ({ route }) => {
                 </View>
             </ScrollView>
 
-            <CardWithActions page={CardWithActionsPages.profileDetail} setSwipingDirection={(direction: Direction) => setSwipingDirection(direction)} zIndex={1} swipingDirection={swipeDirection} swiperRef={swiperRef as  React.RefObject<Swiper<any>>} />
+            <CardWithActions profileId={userId} page={CardWithActionsPages.profileDetail} setSwipingDirection={(direction: Direction) => setSwipingDirection(direction)} zIndex={1} swipingDirection={swipeDirection} swiperRef={swiperRef as  React.RefObject<Swiper<any>>} />
 
             <LinearGradient
                 colors={['transparent', '#020202']}

@@ -1,4 +1,4 @@
-import {Dimensions, TouchableOpacity, View} from "react-native";
+import {Dimensions, TouchableOpacity, View, Text} from "react-native";
 import Retry from "../../assets/icons/retry.svg";
 import {LinearGradient} from "expo-linear-gradient";
 import Dislike from "../../assets/icons/Dislike";
@@ -14,7 +14,14 @@ import {useNavigation} from "@react-navigation/native";
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
+export const CardWithActionsPages:CardWithActionsPages = {
+    discover: "DISCOVER",
+    profileDetail: "PROFILE_DETAIL",
+    likesList: "LIKES_LIST"
+}
+
 type CardWithActionsProps = {
+    profileId: string,
     page?: "DISCOVER" | "PROFILE_DETAIL" | null,
     setSwipingDirection: (direction: Direction) => void,
     swipingDirection: Direction,
@@ -24,16 +31,14 @@ type CardWithActionsProps = {
 
 export type CardWithActionsPages = {
     discover: "DISCOVER",
-    profileDetail: "PROFILE_DETAIL"
+    profileDetail: "PROFILE_DETAIL",
+    likesList: "LIKES_LIST"
 }
 
-export const CardWithActionsPages:CardWithActionsPages = {
-    discover: "DISCOVER",
-    profileDetail: "PROFILE_DETAIL"
-}
-
-const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwipingDirection, swipingDirection, swiperRef}) => {
+const CardWithActions:React.FC<CardWithActionsProps> = ({profileId, page,zIndex = 0, setSwipingDirection, swipingDirection, swiperRef}) => {
     const navigation = useNavigation();
+    // @ts-ignore
+    const currentSwipeProfileId = swiperRef.current?.props.cards[swiperRef.current?.state.firstCardIndex].id;
 
     return (
         <View
@@ -51,7 +56,7 @@ const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwi
                 <Retry style={{height: 23, width: 23}}/>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{setSwipingDirection(DIRECTIONS.left); (page === CardWithActionsPages.profileDetail) && navigation.goBack(); swiperRef.current?.swipeLeft()}}
+            <TouchableOpacity onPress={()=>{setSwipingDirection(DIRECTIONS.left); (page === CardWithActionsPages.profileDetail) && navigation.goBack(); profileId === currentSwipeProfileId &&  swiperRef.current?.swipeLeft()}}
               style={{height: 50, width: 50,
                   shadowColor: "rgb(204, 219, 232)",
                   shadowOffset: { width: 3, height: 3 }, display: "flex",
@@ -69,7 +74,7 @@ const CardWithActions:React.FC<CardWithActionsProps> = ({page,zIndex = 0, setSwi
                     </LinearGradient>:  <Dislike fill={"#FF7074"}/>}
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={()=>{setSwipingDirection(DIRECTIONS.right); (page === CardWithActionsPages.profileDetail)  && navigation.goBack(); swiperRef.current?.swipeRight()}}
+            <TouchableOpacity onPress={()=>{setSwipingDirection(DIRECTIONS.right); (page === CardWithActionsPages.profileDetail)  && navigation.goBack(); profileId === currentSwipeProfileId && swiperRef.current?.swipeRight()}}
                               style={{height: 50, width: 50,
                                   shadowColor: "rgb(204, 219, 232)",
                                   shadowOffset: { width: 3, height: 3 }, display: "flex",
