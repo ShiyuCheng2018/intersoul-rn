@@ -26,7 +26,7 @@ const AppNavigator = () => {
     const navigation = useNavigation<SignInNavigationProp>();
 
     return (
-        <Stack.Navigator initialRouteName={"MainApp"} screenOptions={{headerStyle: {backgroundColor: "black", borderBottomWidth: 0, elevation:0, shadowColor: 'transparent'}}}>
+        <Stack.Navigator initialRouteName={"EmailSignIn"} screenOptions={{headerStyle: {backgroundColor: "black", borderBottomWidth: 0, elevation:0, shadowColor: 'transparent'}}}>
             <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false, gestureEnabled: false }} />
             <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false, gestureEnabled: false }} />
             <Stack.Screen

@@ -1,12 +1,13 @@
 import {get, post} from "../../utils/requests";
 import {EndPoint} from "../../utils/types/requestTypes";
+import snakeToCamel from "../../utils/snakeToCamel";
+import {DispatchProp} from "react-redux";
 
 //经过中间件处理的action所具有的标识
 export const FETCH_DATA = "FETCH_DATA";
 export const POST_DATA = "POST_DATA";
-export const VIEW_CONTRACT = "VIEW_CONTRACT";
 
-export const fetchAPI = () => (next:any) => (action:any) => {
+export const fetchAPI = ({dispatch}: {dispatch: DispatchProp}) => (next:any) => (action:any) => {
   const callAPI = action[FETCH_DATA];
   if (typeof callAPI === "undefined") {
     return next(action);
@@ -39,7 +40,7 @@ export const fetchAPI = () => (next:any) => (action:any) => {
   const [requestType, successType, failureType] = types;
 
   next(actionWith({ type: requestType }));
-  return fetchData(endpoint, schema).then(
+  return fetchData(endpoint, schema, dispatch).then(
     (response) =>
       next(
         actionWith({
@@ -58,7 +59,7 @@ export const fetchAPI = () => (next:any) => (action:any) => {
   );
 };
 
-export const postAPI = () => (next:any) => (action:any) => {
+export const postAPI = ({ dispatch }:{dispatch: DispatchProp})  => (next:any) => (action:any) => {
   const callAPI = action[POST_DATA];
   if (typeof callAPI === "undefined") {
     return next(action);
@@ -90,12 +91,12 @@ export const postAPI = () => (next:any) => (action:any) => {
   const [requestType, successType, failureType] = types;
 
   next(actionWith({ type: requestType }));
-  return postData(endpoint, data, schema).then(
+  return postData(endpoint, data, schema, dispatch).then(
     (response) =>
       next(
         actionWith({
           type: successType,
-          response,
+          response: response.data,
           message: response.message,
           payload: data,
         })
@@ -113,9 +114,9 @@ export const postAPI = () => (next:any) => (action:any) => {
 };
 
 //执行网络请求
-const fetchData = (endpoint:EndPoint, schema:any) => {
+const fetchData = (endpoint:EndPoint, schema:any, dispatch: DispatchProp) => {
   //console.log(endpoint);
-  return get(endpoint)
+  return get(endpoint, dispatch)
     .then((res) => {
       // console.log("normalizeData: ", normalizeData(res, schema));
       // return normalizeData(res, schema);
@@ -124,15 +125,13 @@ const fetchData = (endpoint:EndPoint, schema:any) => {
     .catch((error) => Promise.reject(error));
 };
 
-const postData = (endpoint:EndPoint, data:any, schema:any) => {
+const postData = (endpoint:EndPoint, data:any, schema:any, dispatch: DispatchProp) => {
   console.log(endpoint, data, schema);
 
-  return post(endpoint, data)
+  return post(endpoint, data, dispatch)
     .then((res) => {
-      if (schema) {
-        console.log("normalizeData: ", normalizeData(res, schema));
-      }
-      return schema ? normalizeData(res, schema) : res;
+      let data = snakeToCamel(res);
+      return schema ? normalizeData(data, schema) : data;
     })
     .catch((error) => Promise.reject(error));
 };
@@ -140,7 +139,6 @@ const postData = (endpoint:EndPoint, data:any, schema:any) => {
 //根据schema, 将获取的数据扁平化处理
 export const normalizeData = (rawAPIData:any, schema:any) => {
   let data = rawAPIData;
-  console.log(data);
   const { id, name } = schema;
   let kvObj = {};
   let ids = [];

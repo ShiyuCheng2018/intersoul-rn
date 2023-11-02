@@ -2,13 +2,19 @@ import React from 'react';
 import {View, Text, TextInput, TouchableOpacity} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../../navigations/AppNavigator";
+import useAuth from "../../../hooks/aboutAuth/useAuth";
 
 type EmailSignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'EmailSignIn'>;
 
 const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp }) =>{
 
+    const {emailPasswordSignIn} = useAuth();
+    const [email, setEmail] = React.useState<string>('');
+    const [password, setPassword] = React.useState<string>('');
+
     const handleEmailSignIn = () => {
-        navigation.navigate('ProfileCreation');
+        emailPasswordSignIn({email, password})
+        // navigation.navigate('ProfileCreation');
     };
 
 
@@ -19,7 +25,7 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
                     <View className={"bottom-2"}>
                         <Text className={"text-sm text-white font-medium"}>Email</Text>
                     </View>
-                    <TextInput textContentType={"emailAddress"}
+                    <TextInput textContentType={"emailAddress"} value={email} onChangeText={setEmail}
                         placeholder="Enter email"
                         className='flex py-3 px-4 text-primary bg-gray-200 w-80 h-22 rounded-[36px]'
                     />
@@ -30,7 +36,7 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
                         <Text className={"text-sm text-white font-medium"}>Password</Text>
                     </View>
                     <TextInput textContentType={"password"}  secureTextEntry={true}
-                        placeholder="Enter password"
+                        placeholder="Enter password" value={password} onChangeText={setPassword}
                         className='flex py-3 px-4 bg-gray-200 text-primary w-80 h-22 rounded-[36px]'
                     />
                 </View>
