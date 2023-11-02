@@ -21,6 +21,8 @@ type LocationProps = {
     city: string
 }
 
+export type AfterLogInScreen = "Discover" | "ProfileCreation" | "ProfileMediaUpload"
+
 type initialStateProps = {
     userId: string | null,
     userName: string | null,
@@ -34,7 +36,8 @@ type initialStateProps = {
     bodyTypeId: string | null,
     height: number | null,
     genderId: string | null,
-    profileDescription: string
+    profileDescription: string,
+    afterLogInScreens: Array<AfterLogInScreen>
 }
 
 const initialState: initialStateProps = {
@@ -50,7 +53,8 @@ const initialState: initialStateProps = {
     bodyTypeId: null,
     height: null,
     genderId: null,
-    profileDescription: ""
+    profileDescription: "",
+    afterLogInScreens: []
 }
 
 /***********************************************************************************************************************
@@ -71,7 +75,22 @@ const reducer = (state = initialState, action:any) => {
             const user = action.response.user;
             delete user.provider;
             delete user.providerId;
-            return {...state, ...user};
+
+            let screens:Array<AfterLogInScreen> = [];
+            if(!user.isProfileComplete){
+                if(!user.userName ||
+                    !user.dateOfBirth ||
+                    !user.bodyTypeId ||
+                    !user.height ||
+                    !user.genderId ||
+                    !user.profileDescription
+                ) screens.push("ProfileCreation");
+
+                if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
+                // if(!user.location) screens.push("Location");
+            }
+
+            return {...state, ...user, afterLogInScreens: [...screens, "Discover"]};
         default:
             return state;
     }
@@ -84,4 +103,4 @@ export default reducer;
 /***********************************************************************************************************************
  * 													SELECT  														   *
  * *********************************************************************************************************************/
-
+export const getAfterLogInScreens = (state: any) => state.entities.user.afterLogInScreens;

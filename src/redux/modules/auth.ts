@@ -37,7 +37,7 @@ export const actions = {
     emailPasswordLogin: (data: {email: string, password: string}) => {
         return async (dispatch: any, getState:any) => {
             const endpoint = url.emailPasswordLogin();
-            await dispatch(
+            return await dispatch(
                 dispatchActions(
                     POST_DATA,
                     types.EMAIL_PASSWORD_LOGIN.all(),
@@ -47,16 +47,15 @@ export const actions = {
                 )
             );
 
-            const jwt = getState().entities.auth.jwt;
-            if(jwt){
-                try {
-                    await AsyncStorage.setItem('InterSoul_jwt_token', jwt);
-                } catch (e) {
-                    // reading error
-                    console.error("Failed to fetch the JWT from storage.", e);
-                }
-            }
-            return null;
+            // const jwt = getState().entities.auth.jwt;
+            // if(jwt){
+            //     try {
+            //         await AsyncStorage.setItem('InterSoul_jwt_token', jwt);
+            //     } catch (e) {
+            //         // reading error
+            //         console.error("Failed to fetch the JWT from storage.", e);
+            //     }
+            // }
         }
     },
     emailPasswordSignup: (data: {email: string, password: string}) => {
@@ -102,3 +101,4 @@ export default reducer;
 /***********************************************************************************************************************
  * 													SELECT  														   *
  * *********************************************************************************************************************/
+export const getJWT = (state:any) => state.entities.auth.jwt;

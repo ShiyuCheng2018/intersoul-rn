@@ -1,21 +1,50 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../../navigations/AppNavigator";
 import useAuth from "../../../hooks/aboutAuth/useAuth";
+import {types as authModuleTypes} from "../../../redux/modules/auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type EmailSignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'EmailSignIn'>;
 
 const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp }) =>{
 
-    const {emailPasswordSignIn} = useAuth();
+    const {emailPasswordSignIn, afterLogInScreensGetter, jwtGetter} = useAuth();
     const [email, setEmail] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
 
-    const handleEmailSignIn = () => {
-        emailPasswordSignIn({email, password})
-        // navigation.navigate('ProfileCreation');
+    const handleEmailSignIn = async () => {
+        const data = await emailPasswordSignIn({email, password});
+        await afterLogInScreensGetter;
+        if((data as any).type === authModuleTypes.EMAIL_PASSWORD_LOGIN.success() && afterLogInScreensGetter.length > 0){
+            console.log("data: ", data)
+            // store jwt in AsyncStorage
+            const jwt = jwtGetter;
+            if(jwt){
+                try {
+                    await AsyncStorage.setItem('InterSoul_jwt_token', jwt);
+                } catch (e) {
+                    // reading error
+                    console.error("Failed to fetch the JWT from storage.", e);
+                }
+            }
+        }
     };
+
+    useEffect(()=>{
+        // next screen
+        if(jwtGetter){
+            console.log(afterLogInScreensGetter);
+            const nextScreen = afterLogInScreensGetter[0];
+            if(nextScreen !== "Discover"){
+                navigation.navigate(nextScreen);
+            }else {
+                navigation.navigate('MainApp', { screen: 'Discover' });
+            }
+        }
+
+    }, [jwtGetter])
 
 
     return(

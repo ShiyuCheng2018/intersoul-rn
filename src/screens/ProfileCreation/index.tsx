@@ -2,9 +2,10 @@ import React from "react";
 import {KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../navigations/AppNavigator";
-import Male from "../../assets/icons/male.svg";
-import Female from "../../assets/icons/female.svg";
+
 import {useNavigation} from "@react-navigation/native";
+import MaleIcon from "../../assets/icons/MaleIcon";
+import FemaleIcon from "../../assets/icons/FemaleIcon";
 
 type ProfileCreationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileCreation'>;
 
@@ -51,11 +52,11 @@ const ProfileCreation = () =>{
                             </View>
                             <View className={"flex flex-row justify-around items-center"}>
                                 <TouchableOpacity style={{height: 60, width: 60}} className={"bg-gray-100 justify-around items-center rounded-[36px]"}>
-                                    <Male/>
+                                    <MaleIcon/>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity style={{height: 60, width: 60}} className={"bg-gray-100 justify-around items-center rounded-[36px]"}>
-                                    <Female/>
+                                    <FemaleIcon/>
                                 </TouchableOpacity>
 
                             </View>
@@ -67,13 +68,11 @@ const ProfileCreation = () =>{
                             </View>
                             <View className={"flex flex-row justify-around items-center"}>
                                 <TouchableOpacity style={{height: 60, width: 60}} className={"bg-gray-100 justify-around items-center rounded-[36px]"}>
-                                    <Male/>
+                                    <MaleIcon/>
                                 </TouchableOpacity>
-
                                 <TouchableOpacity style={{height: 60, width: 60}} className={"bg-gray-100 justify-around items-center rounded-[36px]"}>
-                                    <Female/>
+                                    <FemaleIcon/>
                                 </TouchableOpacity>
-
                             </View>
                         </View>
 

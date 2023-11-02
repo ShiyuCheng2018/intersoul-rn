@@ -1,4 +1,5 @@
 import {types as authModuleTypes} from "../auth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 /***********************************************************************************************************************
  * 													STATE 														   *
