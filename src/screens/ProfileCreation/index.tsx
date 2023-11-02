@@ -1,17 +1,36 @@
-import React from "react";
-import {KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View} from "react-native";
+import React, {useState} from "react";
+import {
+    Dimensions,
+    KeyboardAvoidingView,
+    Platform,
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../navigations/AppNavigator";
-
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {useNavigation} from "@react-navigation/native";
 import MaleIcon from "../../assets/icons/MaleIcon";
 import FemaleIcon from "../../assets/icons/FemaleIcon";
-
+import Modal from "react-native-modal";
 type ProfileCreationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileCreation'>;
+const screenHeight = Dimensions.get('window').height;
 
 const ProfileCreation = () =>{
+    const [username, setUsername] = useState('');
+    const [birthday, setBirthday] = useState<null | Date>(null);
+    const [openBirthdayPicker, setOpenBirthdayPicker] = useState(false)
+    const [gender, setGender] = useState('');
+    const [matchPreference, setMatchPreference] = useState('');
+    const [aboutMe, setAboutMe] = useState('');
+    const [errors, setErrors] = useState({});
+
     const navigation = useNavigation<ProfileCreationScreenNavigationProp>();
     const scrollViewRef = React.useRef<ScrollView>(null);
+
 
     const handleProfileCreation = () => {
         navigation.navigate('ProfileMediaUpload');
@@ -40,10 +59,11 @@ const ProfileCreation = () =>{
                             <View className={"bottom-2"}>
                                 <Text className={"text-sm text-white font-medium"}>Birthday</Text>
                             </View>
-                            <TextInput
-                                placeholder="Enter birthday"
-                                className='flex py-3 px-4 bg-gray-50 w-80 h-22 text-primary rounded-[36px]'
-                            />
+                            <TouchableOpacity  className='flex py-3 px-4 bg-gray-50 w-80 h-22 text-primary rounded-[36px]'
+                                               onPress={() => setOpenBirthdayPicker(true)}
+                            >
+                                <Text className={"text-gray-500"}>{birthday? birthday.toDateString() : "Enter your birthday"}</Text>
+                            </TouchableOpacity>
                         </View>
 
                         <View>
@@ -99,6 +119,26 @@ const ProfileCreation = () =>{
                     </View>
                 </View>
             </ScrollView>
+            <Modal
+                isVisible={openBirthdayPicker}
+                onBackdropPress={() => setOpenBirthdayPicker(false)}
+                style={{justifyContent: 'center', margin: 0, backgroundColor: "rgba(0,0,0,0.8)"}}
+            >
+                <DateTimePicker
+                    testID="dateTimePicker" style={{}} textColor={"white"}
+                    value={birthday ?? new Date()}
+                    mode={'date'}
+                    is24Hour={true}
+                    display="spinner"
+                    onChange={(event, selectedDate) => {
+                        const currentDate = selectedDate || new Date();
+                        setOpenBirthdayPicker(Platform.OS === 'ios');
+                        setBirthday(currentDate);
+                    }}
+                    maximumDate={new Date(new Date().setFullYear(new Date().getFullYear() - 18))}
+                    minimumDate={new Date(new Date().setFullYear(new Date().getFullYear() - 100))}
+                />
+            </Modal>
         </KeyboardAvoidingView>
     )
 }
