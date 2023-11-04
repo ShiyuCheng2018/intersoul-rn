@@ -15,12 +15,13 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
     const [password, setPassword] = React.useState<string>('');
 
     const handleEmailSignIn = async () => {
-        const data = await emailPasswordSignIn({email, password});
+        await emailPasswordSignIn({email, password});
+    };
+
+    const storeJwt = async (jwt: string) => {
         await afterLogInScreensGetter;
-        if((data as any).type === authModuleTypes.EMAIL_PASSWORD_LOGIN.success() && afterLogInScreensGetter.length > 0){
-            console.log("data: ", data)
+        if(afterLogInScreensGetter.length > 0){
             // store jwt in AsyncStorage
-            const jwt = jwtGetter;
             if(jwt){
                 try {
                     await AsyncStorage.setItem('InterSoul_jwt_token', jwt);
@@ -30,12 +31,12 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
                 }
             }
         }
-    };
+    }
 
     useEffect(()=>{
         // next screen
         if(jwtGetter){
-            console.log(afterLogInScreensGetter);
+            storeJwt(jwtGetter);
             const nextScreen = afterLogInScreensGetter[0];
             if(nextScreen !== "Discover"){
                 navigation.navigate(nextScreen);

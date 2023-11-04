@@ -5,16 +5,15 @@ import actionTypesConstructor from "../utils/actionTypesConstructor";
 import dispatchActions from "../utils/dispatchActions";
 import {POST_DATA} from "../middlewares/api";
 import url from "../../utils/url";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export const types = {
-    EMAIL_PASSWORD_LOGIN: actionTypesConstructor("APP|[REQUEST]|EMAIL_PASSWORD_LOGIN",
-        "APP|[SUCCESS]|EMAIL_PASSWORD_LOGIN",
-        "APP|[FAILURE]|EMAIL_PASSWORD_LOGIN"),
-    EMAIL_PASSWORD_SIGNUP: actionTypesConstructor("APP|[REQUEST]|EMAIL_PASSWORD_SIGNUP",
-        "APP|[SUCCESS]|EMAIL_PASSWORD_SIGNUP",
-        "APP|[FAILURE]|EMAIL_PASSWORD_SIGNUP"),
-    UPDATE_ACCESS_TOKEN: "APP|[UPDATE]|UPDATE_ACCESS_TOKEN"
+    EMAIL_PASSWORD_LOGIN: actionTypesConstructor("APP|AUTH|[REQUEST]|EMAIL_PASSWORD_LOGIN",
+        "APP|AUTH|[SUCCESS]|EMAIL_PASSWORD_LOGIN",
+        "APP|AUTH|[FAILURE]|EMAIL_PASSWORD_LOGIN"),
+    EMAIL_PASSWORD_SIGNUP: actionTypesConstructor("APP|AUTH|[REQUEST]|EMAIL_PASSWORD_SIGNUP",
+        "APP|AUTH|[SUCCESS]|EMAIL_PASSWORD_SIGNUP",
+        "APP|AUTH|[FAILURE]|EMAIL_PASSWORD_SIGNUP"),
+    UPDATE_ACCESS_TOKEN: "APP|AUTH|[UPDATE]|UPDATE_ACCESS_TOKEN"
 }
 
 /***********************************************************************************************************************
@@ -46,16 +45,6 @@ export const actions = {
                     JSON.stringify(data),
                 )
             );
-
-            // const jwt = getState().entities.auth.jwt;
-            // if(jwt){
-            //     try {
-            //         await AsyncStorage.setItem('InterSoul_jwt_token', jwt);
-            //     } catch (e) {
-            //         // reading error
-            //         console.error("Failed to fetch the JWT from storage.", e);
-            //     }
-            // }
         }
     },
     emailPasswordSignup: (data: {email: string, password: string}) => {

@@ -23,15 +23,36 @@ function get(endpoint: EndPoint, dispatch:DispatchProp): Promise<Response> {
     });
 }
 
-function post(endpoint: EndPoint, data: any, dispatch:DispatchProp) {
+async function post(endpoint: EndPoint, data: any, dispatch:DispatchProp) {
     console.log(data);
+    const jwt = await AsyncStorage.getItem('InterSoul_jwt_token');
+    console.log("jwt: ", jwt)
     return fetch(endpoint.url, {
         method: "POST",
         // @ts-ignore
         headers:{
             ...endpoint.contentType,
             Accept: "application/json",
-            Authorization: endpoint.isProtected ? `Bearer ${process.env.REACT_APP_PINATA_JWT}` : null,
+            Authorization: endpoint.isProtected ? `Bearer ${jwt}` : null,
+        },
+        body: data,
+    }).then((res) => {
+        console.log("[POST]: ", res);
+        return handleResponse(res, endpoint.url, dispatch);
+    });
+}
+
+async function put(endpoint: EndPoint, data: any, dispatch:DispatchProp) {
+    console.log(data);
+    const jwt = await AsyncStorage.getItem('InterSoul_jwt_token');
+    console.log("jwt: ", jwt)
+    return fetch(endpoint.url, {
+        method: "PUT",
+        // @ts-ignore
+        headers:{
+            ...endpoint.contentType,
+            Accept: "application/json",
+            Authorization: endpoint.isProtected ? `Bearer ${jwt}` : null,
         },
         body: data,
     }).then((res) => {
@@ -50,16 +71,14 @@ async function handleResponse(response: Response, URL: String, dispatch:any) : P
             dispatch(updateAccessToken(newAccessToken));
         }
         return Promise.resolve(data);
-    } else {
-
-        console.error(`Request failed. URL= ${URL}`);
-        let data = await response.json();
-        return Promise.reject({
-            code: response.status,
-            message: data.message ?? "Request failed due to your network error, please try later.",
-            error: data.errors ?? "Request failed due to your network error, please try later.",
-        });
     }
+    console.error(`Request failed. URL= ${URL}`);
+    let errorMessage = await response.text();
+    return Promise.reject({
+        code: response.status,
+        message: errorMessage ?? "Request failed due to your network error, please try later.",
+        error: errorMessage ?? "Request failed due to your network error, please try later.",
+    });
 }
 
-export {get, post};
+export {get, post, put};

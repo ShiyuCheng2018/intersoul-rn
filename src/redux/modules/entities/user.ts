@@ -1,4 +1,5 @@
 import {types as authModuleTypes} from "../auth";
+import {types as userModuleTypes} from "../user";
 
 /***********************************************************************************************************************
  * 													STATE 														   *
@@ -23,6 +24,19 @@ type LocationProps = {
 
 export type AfterLogInScreen = "Discover" | "ProfileCreation" | "ProfileMediaUpload"
 
+type preferencesProps = {
+    preferenceId: string | null,
+    userId: string | null,
+    genderPreferenceId: string | null,
+    minHeight: number | null,
+    maxHeight: number | null,
+    bodyTypePreferenceId: string | null,
+    minDistance: number | null,
+    maxDistance: number | null,
+    minAge: number | null,
+    maxAge: number | null
+}
+
 type initialStateProps = {
     userId: string | null,
     userName: string | null,
@@ -37,7 +51,8 @@ type initialStateProps = {
     height: number | null,
     genderId: string | null,
     profileDescription: string,
-    afterLogInScreens: Array<AfterLogInScreen>
+    afterLogInScreens: Array<AfterLogInScreen>,
+    preferences: preferencesProps
 }
 
 const initialState: initialStateProps = {
@@ -54,7 +69,19 @@ const initialState: initialStateProps = {
     height: null,
     genderId: null,
     profileDescription: "",
-    afterLogInScreens: []
+    afterLogInScreens: [],
+    preferences: {
+        preferenceId: null,
+        userId: null,
+        genderPreferenceId: null,
+        minHeight: null,
+        maxHeight: null,
+        bodyTypePreferenceId: null,
+        minDistance: null,
+        maxDistance: null,
+        minAge: null,
+        maxAge: null
+    }
 }
 
 /***********************************************************************************************************************
@@ -80,17 +107,21 @@ const reducer = (state = initialState, action:any) => {
             if(!user.isProfileComplete){
                 if(!user.userName ||
                     !user.dateOfBirth ||
-                    !user.bodyTypeId ||
-                    !user.height ||
+                    // !user.bodyTypeId ||
+                    // !user.height ||
                     !user.genderId ||
-                    !user.profileDescription
+                    !user.profileDescription || !user.preferences.genderPreferenceId
                 ) screens.push("ProfileCreation");
 
                 if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
                 // if(!user.location) screens.push("Location");
             }
-
             return {...state, ...user, afterLogInScreens: [...screens, "Discover"]};
+        case userModuleTypes.PUT_USER_PROFILE_DETAILS.success():
+            console.log(action)
+            return {...state, ...action.payload, isProfileComplete: action.response.isProfileComplete,afterLogInScreens: state.afterLogInScreens[0]=== "ProfileCreation" ? ["ProfileMediaUpload", "Discover"] : [...state.afterLogInScreens]};
+        case userModuleTypes.PUT_USER_PREFERENCES.success():
+            return {...state, preferences: {...state.preferences, ...action.payload}};
         default:
             return state;
     }
