@@ -5,6 +5,7 @@ import {
     PutUserPreferencesAction,
     PutUserProfileDetailsAction
 } from "../../redux/modules/user";
+import {getProfileMedias} from "../../redux/modules/entities/user";
 
 const useUser = () =>{
     const dispatch = useDispatch();
@@ -16,7 +17,8 @@ const useUser = () =>{
     return {
         userDetailsPutter: (data:PutUserProfileDetailsAction) => userDispatcher.putUserProfileDetails(data),
         userPreferencesPutter: (data:PutUserPreferencesAction) => userDispatcher.putUserPreferences(data),
-        userRequestsStatusGetter: useSelector((state)=>getUserRequestsStatus(state))
+        userRequestsStatusGetter: useSelector((state)=>getUserRequestsStatus(state)),
+        userProfileMediasGetter: useSelector((state)=>getProfileMedias(state)),
     }
 }
 

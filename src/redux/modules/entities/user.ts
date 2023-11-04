@@ -135,3 +135,5 @@ export default reducer;
  * 													SELECT  														   *
  * *********************************************************************************************************************/
 export const getAfterLogInScreens = (state: any) => state.entities.user.afterLogInScreens;
+
+export const getProfileMedias = (state: any) => state.entities.user.profileMedias;

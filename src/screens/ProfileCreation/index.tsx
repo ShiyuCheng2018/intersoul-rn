@@ -81,10 +81,10 @@ const ProfileCreation = () =>{
                             <View className={"bottom-2"}>
                                 <Text className={"text-sm text-white font-medium"}>Birthday</Text>
                             </View>
-                            <TouchableOpacity  className='flex py-3 px-4 bg-gray-50 w-80 h-22 text-primary rounded-[36px]'
+                            <TouchableOpacity  className='flex py-3 px-4 bg-gray-50 w-80 h-22 rounded-[36px]'
                                                onPress={() => setOpenBirthdayPicker(true)}
                             >
-                                <Text className={"text-gray-500"}>{dateOfBirth? dateOfBirth.toDateString() : "Enter your birthday"}</Text>
+                                <Text className={"text-gray-400"}>{dateOfBirth? dateOfBirth.toDateString() : "Enter your birthday"}</Text>
                             </TouchableOpacity>
                         </View>
 
