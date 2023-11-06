@@ -61,6 +61,23 @@ async function put(endpoint: EndPoint, data: any, dispatch:DispatchProp) {
     });
 }
 
+async function deleteRequest(endpoint: EndPoint,data:any, dispatch: DispatchProp) {
+    const jwt = await AsyncStorage.getItem('InterSoul_jwt_token');
+    console.log("jwt: ", jwt);
+
+    return fetch(endpoint.url, {
+        method: "DELETE",
+        headers:{
+            ...endpoint.contentType,
+            Accept: "application/json",
+            Authorization: `Bearer ${jwt}`
+        },
+    }).then((res) => {
+        console.log("[DELETE]: ", res);
+        return handleResponse(res, endpoint.url, dispatch);
+    });
+}
+
 async function handleResponse(response: Response, URL: String, dispatch:any) : Promise<any|ErrorMessageType> {
     console.log("[url] ", URL, response.status)
     if (200 === response.status) {
@@ -81,4 +98,4 @@ async function handleResponse(response: Response, URL: String, dispatch:any) : P
     });
 }
 
-export {get, post, put};
+export {get, post, put, deleteRequest};

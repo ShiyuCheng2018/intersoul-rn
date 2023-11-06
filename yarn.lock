@@ -4975,6 +4975,13 @@ expo-pwa@0.0.127:
     commander "2.20.0"
     update-check "1.5.3"
 
+expo-splash-screen@~0.20.5:
+  version "0.20.5"
+  resolved "https://registry.yarnpkg.com/expo-splash-screen/-/expo-splash-screen-0.20.5.tgz#ebeba3e3977606830f74f506ab2cc25042bb7efd"
+  integrity sha512-nTALYdjHpeEA30rdOWSguxn72ctv8WM8ptuUgpfRgsWyn4i6rwYds/rBXisX69XO5fg+XjHAQqijGx/b28+3tg==
+  dependencies:
+    "@expo/prebuild-config" "6.2.6"
+
 expo-status-bar@~1.6.0:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.6.0.tgz#e79ffdb9a84d2e0ec9a0dc7392d9ab364fefa9cf"
@@ -8554,6 +8561,11 @@ react-native-gesture-handler@~2.12.0:
     lodash "^4.17.21"
     prop-types "^15.7.2"
 
+react-native-image-crop-picker@^0.40.1:
+  version "0.40.1"
+  resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.40.1.tgz#3b619d7af5f870aa676d7d5b06a276343b817c0f"
+  integrity sha512-rs7W4jrisOiQtRip5WG0N4bxhT1hr5TWSA8Mo2OrlZgIhvTU9gdIw63hKw35rbwzVAzDkPXOBsR3ZolsTBxqww==
+
 react-native-iphone-x-helper@^1.3.1:
   version "1.3.1"
   resolved "https://registry.npmjs.org/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz"
@@ -8566,6 +8578,11 @@ react-native-modal@^13.0.1:
   dependencies:
     prop-types "^15.6.2"
     react-native-animatable "1.3.3"
+
+react-native-permissions@^3.10.1:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-3.10.1.tgz#cb0171c8d12113869deaabbdfb979aad1a44752b"
+  integrity sha512-Gc5BxxpjZn4QNUDiVeHOO0vXh3AH7ToolmwTJozqC6DsxV7NAf3ttap+8BSmzDR8WxuAM3Cror+YNiBhHJx7/w==
 
 react-native-reanimated@~3.3.0:
   version "3.3.0"
@@ -8788,6 +8805,11 @@ recast@^0.21.0:
     esprima "~4.0.0"
     source-map "~0.6.1"
     tslib "^2.0.1"
+
+redux-devtools-extension@^2.13.9:
+  version "2.13.9"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz#6b764e8028b507adcb75a1cae790f71e6be08ae7"
+  integrity sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A==
 
 redux-thunk@*, redux-thunk@^2.4.2:
   version "2.4.2"

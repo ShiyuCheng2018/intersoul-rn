@@ -1,19 +1,17 @@
 import { createStore, applyMiddleware, compose } from "redux";
 import thunk from "redux-thunk";
-import {fetchAPI, postAPI, putAPI} from "./middlewares/api";
+import {deleteAPI, fetchAPI, postAPI, putAPI} from "./middlewares/api";
 import rootReducer from "./modules";
-import reactotronInstance from "../../ReactotronConfig";
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { Store } from 'redux';
 
-let store:Store;
-let middleware = [thunk, fetchAPI, postAPI, putAPI];
-let enhancer = applyMiddleware(...middleware);
+const middleware = [thunk, fetchAPI, postAPI, putAPI, deleteAPI];
+const enhancer = applyMiddleware(...middleware);
 
+let store: Store;
 if (__DEV__) {
-    const reactotron = reactotronInstance;
-    reactotron.initiate();
-    store =  createStore(rootReducer, compose(enhancer, reactotron.createEnhancer()));
-}else {
+    store = createStore(rootReducer, composeWithDevTools(enhancer));
+} else {
     store = createStore(rootReducer, enhancer);
 }
 

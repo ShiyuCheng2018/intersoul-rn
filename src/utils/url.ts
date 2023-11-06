@@ -26,4 +26,12 @@ export default {
         isProtected: true,
         contentType: { "Content-Type":"application/json" },
     }),
+    addProfileMedia: ():EndPoint =>({
+        url: "http://127.0.0.1:8080/profile/medias",
+        isProtected: true,
+    }),
+    deleteProfileMediaByMediaId: (mediaId:string):EndPoint => ({
+        url: `http://127.0.0.1:8080/profile/medias/${mediaId}`,
+        isProtected: true,
+    })
 }
