@@ -1,5 +1,5 @@
 import React, {createContext, ReactNode, useRef, useState} from "react";
-import Swiper from "react-native-deck-swiper";
+import Swiper from "../components/Swiper";
 
 type DirectionsType = {
     right: Direction,

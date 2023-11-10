@@ -23,7 +23,7 @@ export type MainAppParamList = {
 
 const Tab = createBottomTabNavigator();
 
-const ProtectedDiscover = ScreenGuardian(Discover, true, true);
+const ProtectedDiscover = ScreenGuardian(Discover, true, false);
 const ProtectedLikes = ScreenGuardian(Likes, true, false);
 const ProtectedMessages = ScreenGuardian(Messages, true, false);
 const ProtectedAccount = ScreenGuardian(Account, true, false);

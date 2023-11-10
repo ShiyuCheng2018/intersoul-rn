@@ -27,7 +27,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const ProtectedProfileCreation = ScreenGuardian(ProfileCreation, true, true);
 const ProtectedProfileMediaUpload = ScreenGuardian(ProfileMediaUpload, true, false);
-const ProtectedProfileDetail = ScreenGuardian(ProfileDetailScreen, true, true);
+const ProtectedProfileDetail = ScreenGuardian(ProfileDetailScreen, true, false);
 
 const AppNavigator = () => {
     const navigation = useNavigation<SignInNavigationProp>();

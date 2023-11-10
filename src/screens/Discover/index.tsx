@@ -1,7 +1,6 @@
 import React, {useRef, useState} from "react";
 import {View, Dimensions, TouchableOpacity, Text, Platform, Alert, Linking} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
-import Swiper from 'react-native-deck-swiper';
 import CardDeck from "../../components/CardDeck";
 import {useNavigation} from "@react-navigation/native";
 import CardWithActions from "../../components/CardWithActions";
@@ -78,9 +77,9 @@ const Discover = ()=>{
         <View className={"flex-1 bg-black items-center justify-center"}>
             {/*profile pictures view*/}
             {
-                !!userGeoLocationGetter ?
-                    <CardDeck ref={swiperRef} viewProfileDetail={viewProfileDetail} setSwipingDirection={(direction:Direction)=>setSwipingDirection(direction)}/>:
-                    <EnableGeoLocation onLocationObtained={handleLocationObtained}/>
+                // !!userGeoLocationGetter ?
+                    <CardDeck ref={swiperRef} viewProfileDetail={viewProfileDetail} setSwipingDirection={(direction:Direction)=>setSwipingDirection(direction)}/>
+                    // : <EnableGeoLocation onLocationObtained={handleLocationObtained}/>
             }
             {/*discover options*/}
             {/*<CardWithActions setSwipingDirection={(direction: Direction)=>setSwipingDirection(direction)} swipingDirection={swipeDirection} swiperRef={swiperRef as React.RefObject<Swiper<any>>}/>*/}
