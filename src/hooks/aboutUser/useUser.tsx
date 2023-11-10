@@ -5,7 +5,7 @@ import {
     PutUserPreferencesAction,
     PutUserProfileDetailsAction
 } from "../../redux/modules/user";
-import {getProfileMedias, getUserGeoLocation} from "../../redux/modules/entities/user";
+import {determineNextOnboardingScreen, getProfileMedias, getUserGeoLocation} from "../../redux/modules/entities/user";
 
 const useUser = () =>{
     const dispatch = useDispatch();
@@ -22,6 +22,7 @@ const useUser = () =>{
         userProfileMediaAdder: (data:any) => userDispatcher.postProfileMedia(data),
         userProfileMediaDeleter: (mediaId:string) => userDispatcher.deleteUserProfileMediaByMediaId(mediaId),
         userGeoLocationGetter: useSelector((state)=>getUserGeoLocation(state)),
+        nextOnboardingScreenGetter: useSelector((state) => determineNextOnboardingScreen(state)),
     }
 }
 

@@ -96,10 +96,6 @@ const ProfileMediaUpload = ({ navigation}:{ navigation: ProfileMediaUploadScreen
         }
     };
 
-    const handleDone = () => {
-        navigation.navigate('MainApp', { screen: 'Discover' });
-    }
-
     return(
             <View className={"h-full flex-1 justify-between items-center bg-black"}>
 

@@ -103,21 +103,21 @@ const reducer = (state = initialState, action:any) => {
             delete user.provider;
             delete user.providerId;
 
-            let screens:Array<AfterLogInScreen> = [];
-            if(!user.isProfileComplete){
-                if(!user.userName ||
-                    !user.dateOfBirth ||
-                    // !user.bodyTypeId ||
-                    // !user.height ||
-                    !user.genderId ||
-                    !user.profileDescription || !user.preferences.genderPreferenceId
-                ) screens.push("ProfileCreation");
-
-                if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
-                // screens.push("ProfileMediaUpload");
-                // if(!user.location) screens.push("Location");
-            }
-            return {...state, ...user, afterLogInScreens: [...screens, "Discover"]};
+            // let screens:Array<AfterLogInScreen> = [];
+            // if(!user.isProfileComplete){
+            //     if(!user.userName ||
+            //         !user.dateOfBirth ||
+            //         // !user.bodyTypeId ||
+            //         // !user.height ||
+            //         !user.genderId ||
+            //         !user.profileDescription || !user.preferences.genderPreferenceId
+            //     ) screens.push("ProfileCreation");
+            //
+            //     if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
+            //     // screens.push("ProfileMediaUpload");
+            //     // if(!user.location) screens.push("Location");
+            // }
+            return {...state, ...user};
         case userModuleTypes.PUT_USER_PROFILE_DETAILS.success():
             console.log(action)
             return {...state, ...action.payload, isProfileComplete: action.response.isProfileComplete,afterLogInScreens: state.afterLogInScreens[0]=== "ProfileCreation" ? ["ProfileMediaUpload", "Discover"] : [...state.afterLogInScreens]};
@@ -141,6 +141,28 @@ export default reducer;
  * 													SELECT  														   *
  * *********************************************************************************************************************/
 export const getAfterLogInScreens = (state: any) => state.entities.user.afterLogInScreens;
+
+export const determineNextOnboardingScreen = (state: any): AfterLogInScreen | "SignIn" => {
+    const user = state.entities.user;
+
+    if (user.isProfileComplete) {
+        return "Discover"; // User's profile is complete, direct to the main app
+    }
+
+    if (!user.userName ||
+        !user.dateOfBirth ||
+        !user.genderId ||
+        !user.profileDescription ||
+        !user.preferences.genderPreferenceId) {
+        return "ProfileCreation";
+    }
+
+    if (user.profileMedias.length === 0) {
+        return "ProfileMediaUpload";
+    }
+
+    return "Discover"; // Default to Discover if no other conditions are met
+};
 
 export const getProfileMedias = (state: any) => state.entities.user.profileMedias;
 

@@ -11,6 +11,7 @@ import Likes from "../../screens/Likes";
 import LikeTheme from "../../assets/icons/LikeTheme";
 import MessageIcon from "../../assets/icons/MessageIcon";
 import UserIcon from "../../assets/icons/UserIcon";
+import ScreenGuardian from "../ScreenGuardian";
 
 export type MainAppParamList = {
     Discover: undefined;
@@ -21,6 +22,12 @@ export type MainAppParamList = {
 };
 
 const Tab = createBottomTabNavigator();
+
+const ProtectedDiscover = ScreenGuardian(Discover, true, true);
+const ProtectedLikes = ScreenGuardian(Likes, true, false);
+const ProtectedMessages = ScreenGuardian(Messages, true, false);
+const ProtectedAccount = ScreenGuardian(Account, true, false);
+
 const BottomTabNavigator = () => {
     return (
         <Tab.Navigator
@@ -37,7 +44,7 @@ const BottomTabNavigator = () => {
         >
             <Tab.Screen
                 name="Discover"
-                component={Discover}
+                component={ProtectedDiscover}
                 options={{
                     tabBarLabel: 'Discover',
                     tabBarIcon: ({ color }) => (
@@ -58,7 +65,7 @@ const BottomTabNavigator = () => {
             />
             <Tab.Screen
                 name="Likes"
-                component={Likes}
+                component={ProtectedLikes}
                 options={{ tabBarStyle:{backgroundColor: "black", shadowOpacity: 0,elevation: 0, borderTopWidth: 0},
                     tabBarLabel: 'Likes',
                     tabBarIcon: ({ color, size }) => (
@@ -68,7 +75,7 @@ const BottomTabNavigator = () => {
             />
             <Tab.Screen
                 name="Messages"
-                component={Messages}
+                component={ProtectedMessages}
                 options={{
                     tabBarLabel: 'Messages',
                     tabBarIcon: ({ color, size }) => (
@@ -78,7 +85,7 @@ const BottomTabNavigator = () => {
             />
             <Tab.Screen
                 name="Account"
-                component={Account}
+                component={ProtectedAccount}
                 options={{
                     tabBarLabel: 'Account',
                     tabBarIcon: ({ color, size }) => (
