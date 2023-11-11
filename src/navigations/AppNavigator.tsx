@@ -9,6 +9,9 @@ import {HeaderBackButton} from "@react-navigation/elements";
 import ProfileMediaUpload from "../screens/ProfileMediaUpload";
 import ProfileDetailScreen, { ProfileDetailRouteParams} from "../screens/ProfileDetail";
 import BottomTabNavigator, {MainAppParamList} from "./BottomTabNavigator";
+import ScreenGuardian from "./ScreenGuardian";
+import {TouchableOpacity, Text} from "react-native";
+import useUser from "../hooks/aboutUser/useUser";
 
 export type RootStackParamList = {
     Onboarding: undefined;
@@ -22,11 +25,16 @@ export type RootStackParamList = {
 
 const Stack = createStackNavigator<RootStackParamList>();
 
+const ProtectedProfileCreation = ScreenGuardian(ProfileCreation, true, true);
+const ProtectedProfileMediaUpload = ScreenGuardian(ProfileMediaUpload, true, false);
+const ProtectedProfileDetail = ScreenGuardian(ProfileDetailScreen, true, false);
+
 const AppNavigator = () => {
     const navigation = useNavigation<SignInNavigationProp>();
+    const {userProfileMediasGetter} = useUser();
 
     return (
-        <Stack.Navigator initialRouteName={"ProfileMediaUpload"} screenOptions={{headerStyle: {backgroundColor: "black", borderBottomWidth: 0, elevation:0, shadowColor: 'transparent'}}}>
+        <Stack.Navigator initialRouteName={"EmailSignIn"} screenOptions={{headerStyle: {backgroundColor: "black", borderBottomWidth: 0, elevation:0, shadowColor: 'transparent'}}}>
             <Stack.Screen name="Onboarding" component={OnboardingScreen} options={{ headerShown: false, gestureEnabled: false }} />
             <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false, gestureEnabled: false }} />
             <Stack.Screen
@@ -40,7 +48,7 @@ const AppNavigator = () => {
                     headerTintColor: 'white',
                 }}
             />
-            <Stack.Screen name={"ProfileCreation"} component={ProfileCreation}
+            <Stack.Screen name={"ProfileCreation"} component={ProtectedProfileCreation}
                           options={{ headerShown: true, headerTitle: 'Edit profile',
                               headerBackTitleVisible: false,
                               headerLeft: (props) => (
@@ -54,12 +62,23 @@ const AppNavigator = () => {
                               headerTintColor: 'white',
                               gestureEnabled: false }} />
 
-            <Stack.Screen name={"ProfileMediaUpload"} component={ProfileMediaUpload}
+            <Stack.Screen name={"ProfileMediaUpload"} component={ProtectedProfileMediaUpload}
                           options={{ headerShown: true, headerTitle: 'Add profile medias',
                               headerBackTitleVisible: false,
                               headerTintColor: '#616161',
-                              gestureEnabled: false }} />
-            <Stack.Screen name={"ProfileDetail"} component={ProfileDetailScreen} options={{
+                              gestureEnabled: false,
+                              headerRight: () => (
+                                  <TouchableOpacity disabled={!(userProfileMediasGetter.length > 0)}
+                                      onPress={() => {
+                                          navigation.navigate('MainApp', { screen: 'Discover' });
+                                      }}
+                                  >
+                                      <Text style={{color: userProfileMediasGetter.length > 0 ? "#ffffff" : '#616161'}}>Done</Text>
+                                  </TouchableOpacity>),
+                          }}
+            />
+
+            <Stack.Screen name={"ProfileDetail"} component={ProtectedProfileDetail} options={{
                 headerShown: false,
                 headerBackTitleVisible: false,
             }}/>

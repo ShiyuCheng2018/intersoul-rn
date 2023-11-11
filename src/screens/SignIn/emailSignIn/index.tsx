@@ -3,8 +3,8 @@ import {View, Text, TextInput, TouchableOpacity} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {RootStackParamList} from "../../../navigations/AppNavigator";
 import useAuth from "../../../hooks/aboutAuth/useAuth";
-import {types as authModuleTypes} from "../../../redux/modules/auth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useUser from "../../../hooks/aboutUser/useUser";
 
 type EmailSignInScreenNavigationProp = StackNavigationProp<RootStackParamList, 'EmailSignIn'>;
 
@@ -13,14 +13,14 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
     const {emailPasswordSignIn, afterLogInScreensGetter, jwtGetter} = useAuth();
     const [email, setEmail] = React.useState<string>('');
     const [password, setPassword] = React.useState<string>('');
+    const {nextOnboardingScreenGetter} = useUser();
 
     const handleEmailSignIn = async () => {
         await emailPasswordSignIn({email, password});
     };
 
     const storeJwt = async (jwt: string) => {
-        await afterLogInScreensGetter;
-        if(afterLogInScreensGetter.length > 0){
+
             // store jwt in AsyncStorage
             if(jwt){
                 try {
@@ -30,16 +30,15 @@ const EmailSignIn = ({ navigation}:{ navigation: EmailSignInScreenNavigationProp
                     console.error("Failed to fetch the JWT from storage.", e);
                 }
             }
-        }
+
     }
 
     useEffect(()=>{
         // next screen
         if(jwtGetter){
             storeJwt(jwtGetter);
-            const nextScreen = afterLogInScreensGetter[0];
-            if(nextScreen !== "Discover"){
-                navigation.navigate(nextScreen);
+            if(nextOnboardingScreenGetter !== "Discover"){
+                navigation.navigate(nextOnboardingScreenGetter);
             }else {
                 navigation.navigate('MainApp', { screen: 'Discover' });
             }

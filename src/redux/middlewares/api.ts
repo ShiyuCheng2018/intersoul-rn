@@ -1,4 +1,4 @@
-import {get, post, put} from "../../utils/requests";
+import {deleteRequest, get, post, put} from "../../utils/requests";
 import {EndPoint} from "../../utils/types/requestTypes";
 import snakeToCamel from "../../utils/snakeToCamel";
 import {DispatchProp} from "react-redux";
@@ -7,6 +7,7 @@ import {DispatchProp} from "react-redux";
 export const FETCH_DATA = "FETCH_DATA";
 export const POST_DATA = "POST_DATA";
 export const PUT_DATA = "PUT_DATA";
+export const DELETE_DATA= "DELETE_DATA";
 
 export const fetchAPI = ({dispatch}: {dispatch: DispatchProp}) => (next:any) => (action:any) => {
   const callAPI = action[FETCH_DATA];
@@ -91,7 +92,7 @@ export const postAPI = ({ dispatch }:{dispatch: DispatchProp})  => (next:any) =>
 
   const [requestType, successType, failureType] = types;
 
-  next(actionWith({ type: requestType }));
+  next(actionWith({ type: requestType, payload: data}));
   return postData(endpoint, data, schema, dispatch).then(
     (response) =>
       next(
@@ -167,6 +168,60 @@ export const putAPI = ({ dispatch }:{dispatch: DispatchProp})  => (next:any) => 
           )
   );
 };
+
+export const deleteAPI = ({ dispatch }:{dispatch: DispatchProp})  => (next:any) => (action:any) => {
+    const callAPI = action[DELETE_DATA];
+    if (typeof callAPI === "undefined") {
+        return next(action);
+    }
+
+    const { endpoint, schema, types, data } = callAPI;
+    if (typeof endpoint.url !== "string") {
+        throw new Error("endpoint必须为字符串类型的URL");
+    }
+    if (typeof endpoint.isProtected !== "boolean") {
+        throw new Error("endpoint必须为BOOLEAN类型的URL");
+    }
+    // if (!schema) {
+    // 	throw new Error("必须指定领域实体的schema");
+    // }
+    if (!Array.isArray(types) && types.length !== 3) {
+        throw new Error("需要指定一个包含了3个action type的数组");
+    }
+    if (!types.every((type:any) => typeof type === "string")) {
+        throw new Error("action type必须为字符串类型");
+    }
+
+    const actionWith = (data:any) => {
+        const finalAction = { ...action, ...data };
+        delete finalAction[DELETE_DATA];
+        return finalAction;
+    };
+
+    const [requestType, successType, failureType] = types;
+
+    next(actionWith({ type: requestType }));
+    return deleteData(endpoint, data, schema, dispatch).then(
+        (response) =>
+            next(
+                actionWith({
+                    type: successType,
+                    response: response.data,
+                    message: response.message,
+                    payload: data,
+                })
+            ),
+        (error) =>
+            next(
+                actionWith({
+                    type: failureType,
+                    error: error.error || "Failed to delete data.",
+                    code: error.code,
+                    message: error.message || "Failed to delete data.",
+                })
+            )
+    );
+};
 //执行网络请求
 const fetchData = (endpoint:EndPoint, schema:any, dispatch: DispatchProp) => {
   //console.log(endpoint);
@@ -188,6 +243,17 @@ const postData = (endpoint:EndPoint, data:any, schema:any, dispatch: DispatchPro
       return schema ? normalizeData(data, schema) : data;
     })
     .catch((error) => Promise.reject(error));
+};
+
+const deleteData = (endpoint:EndPoint, data:any, schema:any, dispatch: DispatchProp) => {
+    console.log(endpoint, data, schema);
+
+    return deleteRequest(endpoint, data, dispatch)
+        .then((res) => {
+            let data = snakeToCamel(res);
+            return schema ? normalizeData(data, schema) : data;
+        })
+        .catch((error) => Promise.reject(error));
 };
 
 const putData = (endpoint:EndPoint, data:any, schema:any, dispatch: DispatchProp) => {

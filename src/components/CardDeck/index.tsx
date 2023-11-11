@@ -1,6 +1,6 @@
 import React, {ForwardRefRenderFunction, useCallback, useRef, useState} from "react";
 import {View, StyleSheet, Image, Text, TouchableOpacity, NativeTouchEvent, Dimensions} from "react-native";
-import Swiper from "react-native-deck-swiper";
+import Swiper from "../Swiper";
 import ElonMusk from "../../assets/profile/elonMusk/Elon_Musk.jpeg";
 import ElonMusk_1 from "../../assets/profile/elonMusk/ElonMusk_1.jpg";
 import ElonMusk_2 from "../../assets/profile/elonMusk/ElonMusk_2.jpeg";
@@ -190,20 +190,16 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
             <Swiper ref={ref}
                 containerStyle={{backgroundColor: "transparent"}}
                 cards={data}
+                 onTapCard={(cardInfo) => {
+                     if(cardInfo.tapSide === "left"){
+                         handleLeftTap(cardInfo.cardIndex)
+                     } else if(cardInfo.tapSide === "right"){
+                            handleRightTap(cardInfo.cardIndex)
+                     }
+                 }}
                 renderCard={(card, index) => {
                     return (
                         <View style={{height: screenHeight * 0.76, width: screenWidth * 0.90, borderRadius: 16, alignItems: "center",display: "flex", justifyContent:"center", position: "relative"}}>
-
-                            <TouchableOpacity
-                                style={{position: 'absolute', top: 0, left: 0, width: screenWidth * 0.90 / 2, height: screenHeight * 0.76, zIndex: 1}}
-                                onPress={()=>handleLeftTap(index)}
-                            ></TouchableOpacity>
-
-                            {/* This touchable area is for detecting taps on the right side */}
-                            <TouchableOpacity
-                                style={{position: 'absolute', top: 0, right: 0, width: screenWidth * 0.90 / 2, height: screenHeight * 0.76, zIndex: 1}}
-                                onPress={()=>handleRightTap(index)}
-                            ></TouchableOpacity>
 
                             {renderImageIndicator(imageIndices[index], card.url.length)}
                             <Image style={{height: "100%", width: "100%", borderRadius: 16,  position:"relative", top: 0,}} source={card.url[imageIndices[index]]}

@@ -18,7 +18,6 @@ import FemaleIcon from "../../assets/icons/FemaleIcon";
 import Modal from "react-native-modal";
 import {getKeyByValueFromGenderEntity} from "../../constants/genderEntity";
 import useUser from "../../hooks/aboutUser/useUser";
-import useAuth from "../../hooks/aboutAuth/useAuth";
 type ProfileCreationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProfileCreation'>;
 
 const GENDERS = {
@@ -39,7 +38,6 @@ const ProfileCreation = () =>{
     const navigation = useNavigation<ProfileCreationScreenNavigationProp>();
     const scrollViewRef = React.useRef<ScrollView>(null);
     const {userPreferencesPutter, userDetailsPutter} = useUser();
-    const {afterLogInScreensGetter} = useAuth();
 
     const handleProfileCreation = async () => {
         if(userName.length === 0 || !dateOfBirth || genderId.length === 0 || profileDescription.length === 0){
@@ -48,13 +46,6 @@ const ProfileCreation = () =>{
         }
         await userDetailsPutter({userName, dateOfBirth, genderId, profileDescription});
         await userPreferencesPutter({genderPreferenceId});
-        await afterLogInScreensGetter;
-        const nextScreen = afterLogInScreensGetter[0];
-        if(nextScreen !== "Discover"){
-            navigation.navigate(nextScreen);
-        }else {
-            navigation.navigate('MainApp', { screen: 'Discover' });
-        }
     }
 
     return (

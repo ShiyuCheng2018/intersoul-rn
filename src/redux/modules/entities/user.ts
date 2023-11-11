@@ -4,12 +4,12 @@ import {types as userModuleTypes} from "../user";
 /***********************************************************************************************************************
  * 													STATE 														   *
  * *********************************************************************************************************************/
-type ProfileMediasProps = {
+export type ProfileMediasProps = {
     profileMediaId: string,
-    "userId": string,
-    "profileMediaTypeId": string,
-    "mediaPath": string,
-    "order": number
+    userId: string,
+    profileMediaTypeId: string,
+    mediaPath: string,
+    order: number
 }
 
 type LocationProps = {
@@ -103,25 +103,31 @@ const reducer = (state = initialState, action:any) => {
             delete user.provider;
             delete user.providerId;
 
-            let screens:Array<AfterLogInScreen> = [];
-            if(!user.isProfileComplete){
-                if(!user.userName ||
-                    !user.dateOfBirth ||
-                    // !user.bodyTypeId ||
-                    // !user.height ||
-                    !user.genderId ||
-                    !user.profileDescription || !user.preferences.genderPreferenceId
-                ) screens.push("ProfileCreation");
-
-                if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
-                // if(!user.location) screens.push("Location");
-            }
-            return {...state, ...user, afterLogInScreens: [...screens, "Discover"]};
+            // let screens:Array<AfterLogInScreen> = [];
+            // if(!user.isProfileComplete){
+            //     if(!user.userName ||
+            //         !user.dateOfBirth ||
+            //         // !user.bodyTypeId ||
+            //         // !user.height ||
+            //         !user.genderId ||
+            //         !user.profileDescription || !user.preferences.genderPreferenceId
+            //     ) screens.push("ProfileCreation");
+            //
+            //     if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
+            //     // screens.push("ProfileMediaUpload");
+            //     // if(!user.location) screens.push("Location");
+            // }
+            return {...state, ...user};
         case userModuleTypes.PUT_USER_PROFILE_DETAILS.success():
             console.log(action)
             return {...state, ...action.payload, isProfileComplete: action.response.isProfileComplete,afterLogInScreens: state.afterLogInScreens[0]=== "ProfileCreation" ? ["ProfileMediaUpload", "Discover"] : [...state.afterLogInScreens]};
         case userModuleTypes.PUT_USER_PREFERENCES.success():
             return {...state, preferences: {...state.preferences, ...action.payload}};
+        case userModuleTypes.POST_USER_PROFILE_MEDIA.success():
+            return {...state, profileMedias: [...action.response.userProfileMedias], afterLogInScreens: state.afterLogInScreens[0]=== "ProfileMediaUpload" ? ["Discover"] : [...state.afterLogInScreens]};
+        case userModuleTypes.DELETE_USER_PROFILE_MEDIA.success():
+            const mediaId =  action.payload.mediaId;
+            return {...state, profileMedias: [...state.profileMedias.filter((media:ProfileMediasProps) => media.profileMediaId !== mediaId)]};
         default:
             return state;
     }
@@ -136,4 +142,31 @@ export default reducer;
  * *********************************************************************************************************************/
 export const getAfterLogInScreens = (state: any) => state.entities.user.afterLogInScreens;
 
+export const determineNextOnboardingScreen = (state: any): AfterLogInScreen | "SignIn" => {
+    const user = state.entities.user;
+
+    if (user.isProfileComplete) {
+        return "Discover"; // User's profile is complete, direct to the main app
+    }
+
+    if (!user.userName ||
+        !user.dateOfBirth ||
+        !user.genderId ||
+        !user.profileDescription ||
+        !user.preferences.genderPreferenceId) {
+        return "ProfileCreation";
+    }
+
+    if (user.profileMedias.length === 0) {
+        return "ProfileMediaUpload";
+    }
+
+    return "Discover"; // Default to Discover if no other conditions are met
+};
+
 export const getProfileMedias = (state: any) => state.entities.user.profileMedias;
+
+export const getUserGeoLocation = (state: any) => {
+    if(!state.entities.user.isProfileComplete) return null;
+    state.entities.user.location
+};
