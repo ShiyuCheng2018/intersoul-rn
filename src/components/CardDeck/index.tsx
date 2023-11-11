@@ -281,7 +281,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1, marginTop: -(screenHeight * 0.072),
+        flex: 1, marginTop: -(screenHeight * 0.06),
         backgroundColor: "transparent",zIndex: 0,
         height: screenHeight,
         width: screenWidth,

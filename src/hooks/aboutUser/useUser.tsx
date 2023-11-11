@@ -23,6 +23,7 @@ const useUser = () =>{
         userProfileMediaDeleter: (mediaId:string) => userDispatcher.deleteUserProfileMediaByMediaId(mediaId),
         userGeoLocationGetter: useSelector((state)=>getUserGeoLocation(state)),
         nextOnboardingScreenGetter: useSelector((state) => determineNextOnboardingScreen(state)),
+        userLocationPoster: (data: {latitude: number, longitude: number}) => userDispatcher.postUserLocation(data)
     }
 }
 

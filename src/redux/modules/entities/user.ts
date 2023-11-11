@@ -102,21 +102,6 @@ const reducer = (state = initialState, action:any) => {
             const user = action.response.user;
             delete user.provider;
             delete user.providerId;
-
-            // let screens:Array<AfterLogInScreen> = [];
-            // if(!user.isProfileComplete){
-            //     if(!user.userName ||
-            //         !user.dateOfBirth ||
-            //         // !user.bodyTypeId ||
-            //         // !user.height ||
-            //         !user.genderId ||
-            //         !user.profileDescription || !user.preferences.genderPreferenceId
-            //     ) screens.push("ProfileCreation");
-            //
-            //     if(user.profileMedias.length === 0) screens.push("ProfileMediaUpload");
-            //     // screens.push("ProfileMediaUpload");
-            //     // if(!user.location) screens.push("Location");
-            // }
             return {...state, ...user};
         case userModuleTypes.PUT_USER_PROFILE_DETAILS.success():
             console.log(action)
@@ -128,7 +113,9 @@ const reducer = (state = initialState, action:any) => {
         case userModuleTypes.DELETE_USER_PROFILE_MEDIA.success():
             const mediaId =  action.payload.mediaId;
             return {...state, profileMedias: [...state.profileMedias.filter((media:ProfileMediasProps) => media.profileMediaId !== mediaId)]};
-        default:
+        case userModuleTypes.POST_USER_LOCATION.success():
+            return {...state, isProfileComplete: action.response.isProfileComplete, location: action.response.location};
+            default:
             return state;
     }
 }
@@ -168,5 +155,5 @@ export const getProfileMedias = (state: any) => state.entities.user.profileMedia
 
 export const getUserGeoLocation = (state: any) => {
     if(!state.entities.user.isProfileComplete) return null;
-    state.entities.user.location
+    return state.entities.user.location
 };

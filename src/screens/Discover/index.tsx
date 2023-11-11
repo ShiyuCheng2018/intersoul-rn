@@ -62,11 +62,11 @@ const EnableGeoLocation: React.FC<EnableGeoLocationProps> = ({ onLocationObtaine
 const Discover = ()=>{
     const navigation = useNavigation<DiscoverScreenNavigationProp>();
     const {swipeDirection, setSwipingDirection, swiperRef} = useCardActions();
-    const {userGeoLocationGetter} = useUser();
+    const {userGeoLocationGetter, userLocationPoster} = useUser();
 
     const handleLocationObtained = (position:any) => {
-        // Do something with the position, e.g., send it to your server
         console.log(position);
+        userLocationPoster({latitude: position.coords.latitude, longitude: position.coords.longitude});
     };
 
     const viewProfileDetail = (userId:string) => {
@@ -77,9 +77,9 @@ const Discover = ()=>{
         <View className={"flex-1 bg-black items-center justify-center"}>
             {/*profile pictures view*/}
             {
-                // !!userGeoLocationGetter ?
+                !!userGeoLocationGetter ?
                     <CardDeck ref={swiperRef} viewProfileDetail={viewProfileDetail} setSwipingDirection={(direction:Direction)=>setSwipingDirection(direction)}/>
-                    // : <EnableGeoLocation onLocationObtained={handleLocationObtained}/>
+                    : <EnableGeoLocation onLocationObtained={handleLocationObtained}/>
             }
             {/*discover options*/}
             {/*<CardWithActions setSwipingDirection={(direction: Direction)=>setSwipingDirection(direction)} swipingDirection={swipeDirection} swiperRef={swiperRef as React.RefObject<Swiper<any>>}/>*/}

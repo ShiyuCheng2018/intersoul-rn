@@ -19,6 +19,9 @@ export const types = {
     DELETE_USER_PROFILE_MEDIA: actionTypesConstructor("APP|USER|[REQUEST]|DELETE_USER_PROFILE_MEDIA",
         "APP|USER|[SUCCESS]|DELETE_USER_PROFILE_MEDIA",
         "APP|USER|[FAILURE]|DELETE_USER_PROFILE_MEDIA"),
+    POST_USER_LOCATION: actionTypesConstructor("APP|USER|[REQUEST]|POST_USER_LOCATION",
+        "APP|USER|[SUCCESS]|POST_USER_LOCATION",
+        "APP|USER|[FAILURE]|POST_USER_LOCATION"),
 }
 
 /***********************************************************************************************************************
@@ -28,6 +31,7 @@ const initialState = {
     isPuttingUserProfileDetails: false,
     isPuttingUserPreferences: false,
     isPostingUserProfileMedia: false,
+    isPostingUserLocation: false,
 }
 
 /***********************************************************************************************************************
@@ -89,6 +93,20 @@ export const actions = {
                     DELETE_DATA,
                     types.DELETE_USER_PROFILE_MEDIA.all(),
                     endpoint,null, {mediaId}
+                )
+            )
+        }
+    },
+    postUserLocation: (data: {longitude: number,
+        latitude: number}) => {
+        return async (dispatch: any) => {
+            const endpoint = url.postUserLocation();
+            await dispatch(
+                dispatchActions(
+                    POST_DATA,
+                    types.POST_USER_LOCATION.all(),
+                    endpoint,null,
+                    JSON.stringify(data),
                 )
             )
         }
