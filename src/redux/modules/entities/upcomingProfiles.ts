@@ -1,22 +1,21 @@
-
+import {types as upcomingProfilesTypes} from "../upcomingProfiles";
 /***********************************************************************************************************************
  * 													STATE 														   *
  * *********************************************************************************************************************/
 type ProfileMedia = {
-    profileMediaId: string,
     profileMediaTypeId: string,
     mediaPath: string,
     order: number
 }
 
-type UpcomingProfile = {
+export type UpcomingProfile = {
     id: string,
     username: string,
     dateOfBirth: string,
     jobTitle: string,
     bodyTypeId: null,
     height: null,
-    profileImages: Array<ProfileMedia>,
+    profileMedia: Array<ProfileMedia>,
     genderId: null,
     isProfileComplete: false,
     location: null,
@@ -24,14 +23,18 @@ type UpcomingProfile = {
     profileDescription: string,
 }
 
-const initialState:Array<UpcomingProfile> = [];
+type InitialStateType = {
+    [userId: string]: UpcomingProfile
+}
+
+const initialState:InitialStateType = {};
 
 /***********************************************************************************************************************
  * 													SCHEMA 														   *
  * *********************************************************************************************************************/
 export const schema = {
     name: "upcomingProfiles",
-    id: "id",
+    id: "userId",
 };
 
 /***********************************************************************************************************************
@@ -40,6 +43,17 @@ export const schema = {
 
 const reducer = (state = initialState, action:any) => {
     switch (action.type) {
+        case upcomingProfilesTypes.FETCH_PROFILES.success():
+            const newProfiles = action.response.upcomingProfiles;
+            // Check for actual changes before updating state
+            const isDifferent = Object.keys(newProfiles).some(
+                key => !state[key] || (state[key] && JSON.stringify(state[key]) !== JSON.stringify(newProfiles[key]))
+            );
+
+            if (isDifferent) {
+                // Merge new profiles into existing state
+                return { ...state, ...newProfiles };
+            }
         default:
             return state;
     }

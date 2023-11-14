@@ -38,5 +38,9 @@ export default {
         url: "http://127.0.0.1:8080/profile/location",
         isProtected: true,
         contentType: { "Content-Type":"application/json" },
+    }),
+    fetchProfiles: ():EndPoint => ({
+        url: "http://127.0.0.1:8080/profile/profiles",
+        isProtected: true,
     })
 }

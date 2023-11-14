@@ -11,11 +11,15 @@ const updateAccessToken = (token:string) => ({
 let requestHeaders = new Headers();
 requestHeaders.append("Accept", "application/json");
 
-function get(endpoint: EndPoint, dispatch:DispatchProp): Promise<Response> {
+async function get(endpoint: EndPoint, dispatch:DispatchProp): Promise<Response> {
+    const jwt = await AsyncStorage.getItem('InterSoul_jwt_token');
     return fetch(endpoint.url, {
         method: "GET",
-        headers: {
+        // @ts-ignore
+        headers:{
+            ...endpoint.contentType,
             Accept: "application/json",
+            Authorization: endpoint.isProtected ? `Bearer ${jwt}` : null,
         },
     }).then((res) => {
         // console.log("[GET]: ", res);

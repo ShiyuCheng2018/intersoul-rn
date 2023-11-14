@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {View, Dimensions, TouchableOpacity, Text, Platform, Alert, Linking} from "react-native";
 import {StackNavigationProp} from "@react-navigation/stack";
 import CardDeck from "../../components/CardDeck";
@@ -9,6 +9,8 @@ import {MainAppParamList} from "../../navigations/BottomTabNavigator";
 import useUser from "../../hooks/aboutUser/useUser";
 import {PERMISSIONS, request, RESULTS} from "react-native-permissions";
 import Geolocation from '@react-native-community/geolocation';
+import useUpcomingProfiles from "../../hooks/aboutUpcomingProfiles/useUpcomingProfiles";
+import useAuth from "../../hooks/aboutAuth/useAuth";
 type DiscoverScreenNavigationProp = StackNavigationProp<MainAppParamList, 'Discover'>;
 export type Direction = "RIGHT" | "LEFT" | null;
 const screenHeight = Dimensions.get('window').height;
@@ -63,6 +65,8 @@ const Discover = ()=>{
     const navigation = useNavigation<DiscoverScreenNavigationProp>();
     const {swipeDirection, setSwipingDirection, swiperRef} = useCardActions();
     const {userGeoLocationGetter, userLocationPoster} = useUser();
+    const {upcomingProfilesFetcher, upcomingProfilesGetter} = useUpcomingProfiles();
+    const {jwtGetter} = useAuth();
 
     const handleLocationObtained = (position:any) => {
         console.log(position);
@@ -73,12 +77,21 @@ const Discover = ()=>{
         navigation.navigate("ProfileDetail", {userId: userId});
     };
 
+    useEffect(() => {
+        console.log("Discover: ", userGeoLocationGetter, jwtGetter)
+        if(jwtGetter){
+            if(userGeoLocationGetter ){
+                upcomingProfilesFetcher();
+            }
+        }
+    }, [userGeoLocationGetter, jwtGetter]);
+
     return(
         <View className={"flex-1 bg-black items-center justify-center"}>
             {/*profile pictures view*/}
             {
                 !!userGeoLocationGetter ?
-                    <CardDeck ref={swiperRef} viewProfileDetail={viewProfileDetail} setSwipingDirection={(direction:Direction)=>setSwipingDirection(direction)}/>
+                    upcomingProfilesGetter.length > 0 && <CardDeck ref={swiperRef} userGeoLocationGetter={userGeoLocationGetter} data={upcomingProfilesGetter} viewProfileDetail={viewProfileDetail} setSwipingDirection={(direction:Direction)=>setSwipingDirection(direction)}/>
                     : <EnableGeoLocation onLocationObtained={handleLocationObtained}/>
             }
             {/*discover options*/}

@@ -1,4 +1,4 @@
-import React, {ForwardRefRenderFunction, useCallback, useRef, useState} from "react";
+import React, {ForwardRefRenderFunction, useCallback, useEffect, useRef, useState} from "react";
 import {View, StyleSheet, Image, Text, TouchableOpacity, NativeTouchEvent, Dimensions} from "react-native";
 import Swiper from "../Swiper";
 import ElonMusk from "../../assets/profile/elonMusk/Elon_Musk.jpeg";
@@ -31,11 +31,13 @@ import DownIcon from "../DownIcon";
 import {Direction} from "../../screens/Discover";
 import * as Haptics from 'expo-haptics';
 import {LinearGradient} from "expo-linear-gradient";
+import calculateAge from "../../utils/calculateAge";
+import calculateDistance from "../../utils/calculateDistanceInKmfromlonLat";
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
 
-const data = [
+const _data = [
     {
         id: 0,
       name: "Shiyu",
@@ -102,6 +104,8 @@ const data = [
 type CardDeckProps = {
     setSwipingDirection: (direction: Direction) => void;
     viewProfileDetail: (userId: string) => void;
+    data: Array<any>,
+    userGeoLocationGetter: {longitude: number, latitude: number}
 }
 
 const SWIPE_THRESHOLD = 100;
@@ -111,11 +115,10 @@ const initializeImageIndices = (profiles:any) => {
 };
 
 const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, ref ) =>{
-    const {setSwipingDirection, viewProfileDetail} = props;
+    const {setSwipingDirection, viewProfileDetail, data, userGeoLocationGetter} = props;
     const nextCardReset = useRef(false);
-    const [profiles, setProfiles] = useState(data); // replace YOUR_REQUEST_DATA with the response from your request
+    const [profiles, setProfiles] = useState<any>(data); // replace YOUR_REQUEST_DATA with the response from your request
     const [imageIndices, setImageIndices] = useState(initializeImageIndices(profiles));
-
 
     const renderImageIndicator = (currentIndex: number, totalImages: number) => {
         return (
@@ -148,7 +151,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
             if (updatedIndices[cardIndex] > 0) {
                 updatedIndices[cardIndex]--;
             } else {
-                updatedIndices[cardIndex] = profiles[cardIndex].url.length - 1;  // wrap around to the last image
+                updatedIndices[cardIndex] = profiles[cardIndex].profileMedia.length - 1;  // wrap around to the last image
             }
 
             if (updatedIndices[cardIndex] !== imageIndices[cardIndex]) {
@@ -161,7 +164,7 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
         const updatedIndices = [...imageIndices];
 
         if (cardIndex < profiles.length && cardIndex >= 0) {
-            if (updatedIndices[cardIndex] < profiles[cardIndex].url.length - 1) {
+            if (updatedIndices[cardIndex] < profiles[cardIndex].profileMedia.length - 1) {
                 updatedIndices[cardIndex]++;
             } else {
                 updatedIndices[cardIndex] = 0;
@@ -199,29 +202,29 @@ const CardDeck: ForwardRefRenderFunction< Swiper<any>, CardDeckProps> = (props, 
                  }}
                 renderCard={(card, index) => {
                     return (
-                        <View style={{height: screenHeight * 0.76, width: screenWidth * 0.90, borderRadius: 16, alignItems: "center",display: "flex", justifyContent:"center", position: "relative"}}>
+                        <View style={{backgroundColor: "#757575",height: screenHeight * 0.76, width: screenWidth * 0.90, borderRadius: 16, alignItems: "center",display: "flex", justifyContent:"center", position: "relative"}}>
 
-                            {renderImageIndicator(imageIndices[index], card.url.length)}
-                            <Image style={{height: "100%", width: "100%", borderRadius: 16,  position:"relative", top: 0,}} source={card.url[imageIndices[index]]}
+                            {renderImageIndicator(imageIndices[index], card.profileMedia.length)}
+                            <Image style={{height: "100%", width: "100%", borderRadius: 16,  position:"relative", top: 0,}} source={{uri: card.profileMedia[imageIndices[index]].mediaPath}}
                                            alt={"pic"}/>
 
 
-                            <TouchableOpacity onPress={()=>viewProfileDetail(card.id)} style={{position: "absolute",zIndex: 1, bottom: 0, borderBottomLeftRadius: 16, borderBottomRightRadius: 16,paddingTop: 20, width: "100%", paddingLeft: 8, paddingBottom: 20, backgroundColor: 'rgba(0,0,0,0.35)'}}>
+                            <TouchableOpacity onPress={()=>viewProfileDetail(card.userId)} style={{position: "absolute",zIndex: 1, bottom: 0, borderBottomLeftRadius: 16, borderBottomRightRadius: 16,paddingTop: 20, width: "100%", paddingLeft: 8, paddingBottom: 20, backgroundColor: 'rgba(0,0,0,0.35)'}}>
                                 <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6, justifyContent: "space-between"}}>
 
                                     <View style={{display: "flex", flexDirection: "column", gap: 3}}>
                                         <View style={{display: "flex", flexDirection: "row", alignItems: "center", gap:6}}>
-                                            <Text style={{color: "white", fontSize: 25, fontWeight: "bold"}}>{`${card.name}, ${card.age}`}
+                                            <Text style={{color: "white", fontSize: 25, fontWeight: "bold"}}>{`${card.userName}, ${calculateAge(card.dateOfBirth)}`}
                                             </Text>
                                             <VerifiedIcon height={25} width={25}/>
                                         </View>
-                                        <Text style={{color: "white", fontSize: 15}}>{`${card.profession}`}</Text>
-                                        <Text style={{color: "white", fontSize: 15}}>2.5km away</Text>
+                                        <Text style={{color: "white", fontSize: 15}}>{`${card.profession ?? ""}`}</Text>
+                                        <Text style={{color: "white", fontSize: 15}}>{`${calculateDistance(card.location.latitude, card.location.longitude, userGeoLocationGetter.latitude, userGeoLocationGetter.longitude)} km away, ${card.location.state ?? card.location.city}`}</Text>
                                     </View>
                                 </View>
                             </TouchableOpacity>
                                 {/*<LinearGradient*/}
-                                {/*    colors={['transparent', '#020202']}*/}
+                                {/*    colors={['transparent', '#FF7074']}*/}
                                 {/*    style={{height: "30%", width: "100%",bottom: 0,position: "absolute",borderRadius: 16}}  // Here we apply NativeWind styles*/}
                                 {/*></LinearGradient>*/}
                         </View>

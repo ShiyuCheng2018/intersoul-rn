@@ -1,7 +1,7 @@
 import actionTypesConstructor from "../utils/actionTypesConstructor";
 import url from "../../utils/url";
 import dispatchActions from "../utils/dispatchActions";
-import {DELETE_DATA, POST_DATA, PUT_DATA} from "../middlewares/api";
+import {DELETE_DATA, FETCH_DATA, POST_DATA, PUT_DATA} from "../middlewares/api";
 
 /***********************************************************************************************************************
  * 													CONSTANTS 														   *
@@ -110,7 +110,7 @@ export const actions = {
                 )
             )
         }
-    }
+    },
 }
 
 /***********************************************************************************************************************
@@ -142,6 +142,12 @@ const reducer = (state = initialState, action:any) => {
             return { ...state, isDeletingUserProfileMedia: false };
         case types.DELETE_USER_PROFILE_MEDIA.failure():
             return { ...state, isDeletingUserProfileMedia: false };
+        case types.POST_USER_LOCATION.request():
+            return { ...state, isPostingUserLocation: true };
+        case types.POST_USER_LOCATION.success():
+            return { ...state, isPostingUserLocation: false };
+        case types.POST_USER_LOCATION.failure():
+            return { ...state, isPostingUserLocation: false };
         default:
             return state;
     }

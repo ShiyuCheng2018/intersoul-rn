@@ -227,9 +227,8 @@ const fetchData = (endpoint:EndPoint, schema:any, dispatch: DispatchProp) => {
   //console.log(endpoint);
   return get(endpoint, dispatch)
     .then((res) => {
-      // console.log("normalizeData: ", normalizeData(res, schema));
-      // return normalizeData(res, schema);
-      return res;
+        let data = snakeToCamel(res);
+        return schema ? normalizeData(data, schema) : data;
     })
     .catch((error) => Promise.reject(error));
 };

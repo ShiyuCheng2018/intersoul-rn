@@ -5,7 +5,7 @@ const dispatchActions:(method: string, types: string[], endpoint: EndPoint, sche
     if (![FETCH_DATA, POST_DATA, PUT_DATA, DELETE_DATA].includes(method)) {
         throw new Error(`${method} is not supported!`);
     }
-    if (![POST_DATA, PUT_DATA, DELETE_DATA].includes(method) && !data) {
+    if ([POST_DATA, PUT_DATA, DELETE_DATA].includes(method) && !data) {
         throw new Error(`${method}: request data is required!`);
     }
 
